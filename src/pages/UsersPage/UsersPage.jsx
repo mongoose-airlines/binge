@@ -9,8 +9,13 @@ class UsersPage extends Component {
   }
 
   async componentDidMount() {
-    const users = await getAllUsers();
-    this.setState({ users })
+    if (this.props.user) {
+      const users = await getAllUsers();
+      this.setState({ users })
+    }
+    else {
+      this.props.history.push('/login')
+    }
   }
 
   render(){
