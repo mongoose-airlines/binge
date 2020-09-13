@@ -4,20 +4,21 @@ import './App.css';
 import NavBar from '../../components/NavBar/NavBar';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../SignupPage/SignupPage';
-import userService from '../../services/userService';
+import authService from '../../services/authService';
+import UsersPage from '../UsersPage/UsersPage'
 
 class App extends Component {
   state = {
-    user: userService.getUser()
+    user: authService.getUser()
   }
 
   handleLogout = () => {
-    userService.logout();
+    authService.logout();
     this.setState({ user: null });
   }
 
   handleSignupOrLogin = () => {
-    this.setState({user: userService.getUser()});
+    this.setState({user: authService.getUser()});
   }
 
   render () {
@@ -37,6 +38,13 @@ class App extends Component {
           <LoginPage
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
+          />
+        }/>
+        <Route exact path='/users' render={({ history }) => 
+          <UsersPage
+            history={history}
+            handleSignupOrLogin={this.handleSignupOrLogin}
+            user={this.state.user}
           />
         }/>
       </>

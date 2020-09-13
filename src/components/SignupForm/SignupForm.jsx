@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import userService from '../../services/userService';
+import authService from '../../services/authService';
 
 class SignupForm extends Component {
 
@@ -21,7 +21,7 @@ class SignupForm extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await userService.signup(this.state);
+      await authService.signup(this.state);
       this.props.handleSignupOrLogin();
       this.props.history.push('/');
     } catch (err) {
