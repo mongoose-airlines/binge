@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom'
 import './App.css';
 import NavBar from '../../components/NavBar/NavBar';
-import LoginPage from '../LoginPage/LoginPage';
-import SignupPage from '../SignupPage/SignupPage';
+import Login from '../Login/Login';
+import Signup from '../Signup/Signup';
 import authService from '../../services/authService';
-import UsersPage from '../UsersPage/UsersPage'
+import Landing from '../Landing/Landing'
 
 class App extends Component {
   state = {
@@ -28,23 +28,19 @@ class App extends Component {
           user={this.state.user}
           handleLogout={this.handleLogout}
         />
+        <Route exact path='/' render={() =>
+          <Landing />
+        }/>
         <Route exact path='/signup' render={({ history }) => 
-          <SignupPage
+          <Signup
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
           />
         }/>
         <Route exact path='/login' render={({ history }) => 
-          <LoginPage
+          <Login
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
-          />
-        }/>
-        <Route exact path='/users' render={({ history }) => 
-          <UsersPage
-            history={history}
-            handleSignupOrLogin={this.handleSignupOrLogin}
-            user={this.state.user}
           />
         }/>
       </>

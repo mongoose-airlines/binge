@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './LoginPage.css';
+import './Login.css';
 import authService from '../../services/authService';
 
-class LoginPage extends Component {
+class Login extends Component {
   
   state = {
     email: '',
@@ -29,7 +29,7 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <div className="LoginPage">
+      <div className="Login">
         <h3>Log In</h3>
         <form className="col s12" autoComplete="off" onSubmit={this.handleSubmit} >
           <div className="row">
@@ -58,4 +58,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default Login;
