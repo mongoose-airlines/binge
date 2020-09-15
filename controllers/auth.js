@@ -8,6 +8,8 @@ module.exports = {
   login
 };
 
+
+
 async function signup(req, res) {
   const user = new User(req.body);
   try {
