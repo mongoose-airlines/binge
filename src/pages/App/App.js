@@ -45,6 +45,17 @@ class App extends Component {
     }
   }
 
+  handleUpdateMovie = async updatedMovieData => {
+    const updatedMovie = await movieAPI.update(updatedMovieData);
+    const newMoviesArray = this.state.movies.map(m => 
+      m._id === updatedMovie._id ? updatedMovie : m
+    );
+    this.setState(
+      {movies: newMoviesArray},
+      () => this.props.history.push('/movies')
+    );
+  }
+
   async componentDidMount() {
     const movies = await movieAPI.getAll();
     this.setState({movies})
