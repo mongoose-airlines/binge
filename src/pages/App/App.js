@@ -33,6 +33,11 @@ class App extends Component {
     }), () => this.props.history.push('/movies'));
   }
 
+  async componentDidMount() {
+    const movies = await movieAPI.getAll();
+    this.setState({movies})
+  }
+
   render () {
     return (
       <>
