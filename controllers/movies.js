@@ -30,6 +30,7 @@ function index(req, res) {
 
   function update(req, res) {
     Movie.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    .populate('addedBy')
     .then(movie => {res.json(movie)})
     .catch(err => {res.json(err)})
   }
