@@ -59,7 +59,7 @@ class App extends Component {
         <Route 
           exact path='/movies/add'
           render={() =>
-            authServer.getUser() ?
+            authService.getUser() ?
             <AddMovie 
             handleAddMovie = {this.handleAddMovie}
             user={this.state.user}
