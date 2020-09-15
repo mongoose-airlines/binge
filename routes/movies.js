@@ -2,6 +2,7 @@ const router = require('express').Router();
 const moviesCtrl = require('../controllers/movies')
 
 // Public Routes
+router.get('/', moviesCtrl.index);
 
 // Protected Routes
 router.use(require('../config/auth'));
