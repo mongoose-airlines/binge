@@ -8,6 +8,7 @@ router.get('/', moviesCtrl.index);
 // Protected Routes
 router.use(require('../config/auth'));
 router.post('/', checkAuth, moviesCtrl.create);
+router.delete('/:id', checkAuth, moviesCtrl.delete);
 
 function checkAuth(req, res, next) {
   if (req.user) return next();
