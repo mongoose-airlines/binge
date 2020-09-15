@@ -6,6 +6,8 @@ import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import authService from '../../services/authService';
 import Landing from '../Landing/Landing'
+import AddMovie from '../AddMovie/AddMovie'
+import * as movieAPI from '../../services/movies-api'
 
 class App extends Component {
   state = {
@@ -21,6 +23,14 @@ class App extends Component {
 
   handleSignupOrLogin = () => {
     this.setState({user: authService.getUser()});
+  }
+
+  handleAddMovie = async newMovieData => {
+    const newMovie = await movieAPI.create(newMovieData);
+    newMovie.addedBy = {name: this.state.user.name, _id: this.state.user._id}
+    this.setState(state => ({
+      movies: [...state.movies, newMovie]
+    }), () => this.props.history.push('/movies'));
   }
 
   render () {
@@ -45,6 +55,18 @@ class App extends Component {
             handleSignupOrLogin={this.handleSignupOrLogin}
           />
         }/>
+
+        <Route 
+          exact path='/movies/add'
+          render={() =>
+            authServer.getUser() ?
+            <AddMovie 
+            handleAddMovie = {this.handleAddMovie}
+            user={this.state.user}
+            />
+          :
+          <Redirect to='/login' />
+          }/>
       </>
     );
   }
