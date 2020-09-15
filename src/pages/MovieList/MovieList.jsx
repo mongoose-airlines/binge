@@ -6,7 +6,7 @@ import MovieCard from '../../components/MovieCard/MovieCard';
 const MovieList = (props) => {
   return ( 
     <>
-      <div className='Movie-List-grid'>
+      <div className='MovieList-grid'>
         {props.movies.map(movie =>
           <MovieCard 
               key={movie._id}
