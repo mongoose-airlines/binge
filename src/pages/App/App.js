@@ -34,6 +34,17 @@ class App extends Component {
     }), () => this.props.history.push('/movies'));
   }
 
+  handleDeleteMovie = async id => {
+    if(authService.getUser()){
+      await movieAPI.deleteOne(id);
+      this.setState(state => ({
+        movies: state.movies.filter(m => m._id !== id)
+      }), () => this.props.history.push('/movies'));
+    } else {
+      this.props.history.push('/login')
+    }
+  }
+
   async componentDidMount() {
     const movies = await movieAPI.getAll();
     this.setState({movies})
@@ -78,6 +89,7 @@ class App extends Component {
             <MovieList 
               movies={this.state.movies}
               user={this.state.user}
+              handleDeleteMovie={this.handleDeleteMovie}
             />}
           />
       </>
