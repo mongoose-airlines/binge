@@ -5,6 +5,7 @@ const moviesCtrl = require('../controllers/movies')
 
 // Protected Routes
 router.use(require('../config/auth'));
+router.post('/', checkAuth, moviesCtrl.create);
 
 function checkAuth(req, res, next) {
   if (req.user) return next();
