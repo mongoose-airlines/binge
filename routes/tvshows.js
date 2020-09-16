@@ -7,6 +7,8 @@ router.get('/', tvshowsCtrl.index);
 // Protected Routes
 router.use(require('../config/auth'));
 router.post('/', checkAuth, tvshowsCtrl.create);
+router.delete('/:id', checkAuth, tvshowsCtrl.delete);
+
 
 function checkAuth(req, res, next) {
     if (req.user) return next();

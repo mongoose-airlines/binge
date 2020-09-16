@@ -32,6 +32,17 @@ class App extends Component {
     this.setState({user: authService.getUser()});
   }
 
+  handleDeleteTVShow = async id => {
+    if(authService.getUser()){
+      await tvshowAPI.deleteOne(id);
+      this.setState(state => ({
+        tvshows: state.tvshows.filter(t => t._id !== id)
+      }), () => this.props.history.push('/tvshows'));
+    } else {
+      this.props.history.push('/login')
+    }
+  }
+
   handleAddMovie = async newMovieData => {
     const newMovie = await movieAPI.create(newMovieData);
     newMovie.addedBy = {name: this.state.user.name, _id: this.state.user._id}
@@ -145,6 +156,13 @@ class App extends Component {
           user={this.state.user}
         />
       } />
+      <Route exact path='/tvshows' render={() => 
+        <TVShowList 
+          tvshows = {this.state.tvshows}
+          user={this.state.user}
+          handleDeleteTVShow={this.handleDeleteTVShow}
+        />
+      }/>
       </>
     );
   }
