@@ -2,6 +2,7 @@ const router = require('express').Router();
 const tvshowsCtrl = require('../controllers/tvshows');
 
 // Public Routes
+router.get('/', tvshowsCtrl.index);
 
 // Protected Routes
 router.use(require('../config/auth'));

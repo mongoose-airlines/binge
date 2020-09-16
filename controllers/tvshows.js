@@ -2,7 +2,16 @@ const Tvshow = require('../models/tvshow');
 
 module.exports = {
     create,
+    index,
 }
+
+function index(req, res) {
+    Tvshow.find({})
+    .populate('addedBy')
+    .then(tvshows => {res.json(tvshows)})
+    .catch(err => {res.json(err)})
+  }
+
 
 function create(req, res) {
     req.body.addedBy = req.user._id
