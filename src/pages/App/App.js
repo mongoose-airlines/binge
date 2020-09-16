@@ -13,6 +13,7 @@ import * as tvshowAPI from '../../services/tvshows-api'
 import EditMovie from '../EditMovie/EditMovie'
 import AddTVShow from '../AddTVShow/AddTVShow'
 import TVShowList from '../TVShowList/TVShowList';
+import EditTVShow from '../EditTVShow/EditTVShow';
 
 
 
@@ -29,11 +30,11 @@ class App extends Component {
   }
 
   handleSignupOrLogin = () => {
-    this.setState({user: authService.getUser()});
+    this.setState({ user: authService.getUser() });
   }
 
   handleDeleteTVShow = async id => {
-    if(authService.getUser()){
+    if (authService.getUser()) {
       await tvshowAPI.deleteOne(id);
       this.setState(state => ({
         tvshows: state.tvshows.filter(t => t._id !== id)
@@ -45,19 +46,19 @@ class App extends Component {
 
   handleUpdateTVShow = async updatedTVShowData => {
     const updatedTVShow = await tvshowAPI.update(updatedTVShowData);
-    const newTVShowsArray = this.state.tvshows.map(t => 
+    const newTVShowsArray = this.state.tvshows.map(t =>
       t._id === updatedTVShow._id ? updatedTVShow : t
     );
     this.setState(
-      {tvshows: newTVShowsArray},
+      { tvshows: newTVShowsArray },
       () => this.props.history.push('/tvshows')
     );
   }
-  
+
 
   handleAddMovie = async newMovieData => {
     const newMovie = await movieAPI.create(newMovieData);
-    newMovie.addedBy = {name: this.state.user.name, _id: this.state.user._id}
+    newMovie.addedBy = { name: this.state.user.name, _id: this.state.user._id }
     this.setState(state => ({
       movies: [...state.movies, newMovie]
     }), () => this.props.history.push('/movies'));
@@ -65,14 +66,14 @@ class App extends Component {
 
   handleAddTVShow = async newTVShowData => {
     const newTVShow = await tvshowAPI.create(newTVShowData);
-    newTVShow.addedBy = {name: this.state.user.name, _id: this.state.user._id}
+    newTVShow.addedBy = { name: this.state.user.name, _id: this.state.user._id }
     this.setState(state => ({
       tvshows: [...state.tvshows, newTVShow]
     }), () => this.props.history.push('/tvshows'));
   }
 
   handleDeleteMovie = async id => {
-    if(authService.getUser()){
+    if (authService.getUser()) {
       await movieAPI.deleteOne(id);
       this.setState(state => ({
         movies: state.movies.filter(m => m._id !== id)
@@ -84,11 +85,11 @@ class App extends Component {
 
   handleUpdateMovie = async updatedMovieData => {
     const updatedMovie = await movieAPI.update(updatedMovieData);
-    const newMoviesArray = this.state.movies.map(m => 
+    const newMoviesArray = this.state.movies.map(m =>
       m._id === updatedMovie._id ? updatedMovie : m
     );
     this.setState(
-      {movies: newMoviesArray},
+      { movies: newMoviesArray },
       () => this.props.history.push('/movies')
     );
   }
@@ -96,78 +97,88 @@ class App extends Component {
   async componentDidMount() {
     const movies = await movieAPI.getAll();
     const tvshows = await tvshowAPI.getAll();
-    this.setState({movies, tvshows})
+    this.setState({ movies, tvshows })
   }
 
-  render () {
+  render() {
     return (
       <>
-        <NavBar 
+        <NavBar
           user={this.state.user}
           handleLogout={this.handleLogout}
         />
         <Route exact path='/' render={() =>
           <Landing />
-        }/>
-        <Route exact path='/signup' render={({ history }) => 
+        } />
+        <Route exact path='/signup' render={({ history }) =>
           <Signup
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
           />
-        }/>
-        <Route exact path='/login' render={({ history }) => 
+        } />
+        <Route exact path='/login' render={({ history }) =>
           <Login
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
           />
-        }/>
+        } />
 
-        <Route 
+        <Route
           exact path='/movies/add'
           render={() =>
             authService.getUser() ?
-            <AddMovie 
-            handleAddMovie = {this.handleAddMovie}
-            user={this.state.user}
-            />
-          :
-          <Redirect to='/login' />
-          }/>
-          <Route 
-            exact path="/movies" render={() => 
-            <MovieList 
+              <AddMovie
+                handleAddMovie={this.handleAddMovie}
+                user={this.state.user}
+              />
+              :
+              <Redirect to='/login' />
+          } />
+        <Route
+          exact path="/movies" render={() =>
+            <MovieList
               movies={this.state.movies}
               user={this.state.user}
               handleDeleteMovie={this.handleDeleteMovie}
             />}
-          />
-        <Route exact path='/tvshows/add' render={() => 
+        />
+        <Route exact path='/tvshows/add' render={() =>
           authService.getUser() ?
-          <AddTVShow 
-            handleAddTVShow = {this.handleAddTVShow}
-            user={this.state.user}
-          />
-          :
-          <Redirect to='/login' />
-          }/>
-        <Route 
-        exact path='/edit' render={({location}) =>
-        authService.getUser() ?
-          <EditMovie 
-            handleUpdateMovie={this.handleUpdateMovie}
-            location={location}
-            user={this.state.user}
-          />
-          :
-          <Redirect to='/login' />
-        }/>
-        <Route exact path='/tvshows' render={() => 
-          <TVShowList 
-            tvshows = {this.state.tvshows}
+            <AddTVShow
+              handleAddTVShow={this.handleAddTVShow}
+              user={this.state.user}
+            />
+            :
+            <Redirect to='/login' />
+        } />
+        <Route
+          exact path='/edit' render={({ location }) =>
+            authService.getUser() ?
+              <EditMovie
+                handleUpdateMovie={this.handleUpdateMovie}
+                location={location}
+                user={this.state.user}
+              />
+              :
+              <Redirect to='/login' />
+          } />
+        <Route exact path='/tvshows' render={() =>
+          <TVShowList
+            tvshows={this.state.tvshows}
             user={this.state.user}
             handleDeleteTVShow={this.handleDeleteTVShow}
           />
-        }/>
+        } />
+        <Route exact path='/editTV' render={({ location }) =>
+          authService.getUser() ?
+            <EditTVShow
+              handleUpdateTVShow={this.handleUpdateTVShow}
+              location={location}
+              user={this.state.user}
+            />
+            :
+            <Redirect to='/login' />
+        } />
       </>
     );
   }
