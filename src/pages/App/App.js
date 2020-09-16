@@ -43,6 +43,18 @@ class App extends Component {
     }
   }
 
+  handleUpdateTVShow = async updatedTVShowData => {
+    const updatedTVShow = await tvshowAPI.update(updatedTVShowData);
+    const newTVShowsArray = this.state.tvshows.map(t => 
+      t._id === updatedTVShow._id ? updatedTVShow : t
+    );
+    this.setState(
+      {tvshows: newTVShowsArray},
+      () => this.props.history.push('/tvshows')
+    );
+  }
+  
+
   handleAddMovie = async newMovieData => {
     const newMovie = await movieAPI.create(newMovieData);
     newMovie.addedBy = {name: this.state.user.name, _id: this.state.user._id}
