@@ -890,6 +890,7 @@ module.exports = {
 .
 function update(req, res) {
   Movie.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  .populate('addedBy')
   .then(movie => {res.json(movie)})
   .catch(err => {res.json(err)})
 }
@@ -1673,6 +1674,7 @@ module.exports = {
 .
 function update(req, res) {
     Tvshow.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .populate('addedBy')
     .then(tvshow => {res.json(tvshow)})
     .catch(err => {res.json(err)})
 }
