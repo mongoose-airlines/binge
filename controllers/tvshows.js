@@ -4,6 +4,7 @@ module.exports = {
     create,
     index,
     delete: deleteOne,
+    update
 }
 
 function index(req, res) {
@@ -25,4 +26,11 @@ function create(req, res) {
     Tvshow.create(req.body)
         .then(tvshow => { res.json(tvshow) })
         .catch(err => { res.json(err) })
+}
+
+function update(req, res) {
+    Tvshow.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .populate('addedBy')
+    .then(tvshow => {res.json(tvshow)})
+    .catch(err => {res.json(err)})
 }
