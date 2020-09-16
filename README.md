@@ -1150,7 +1150,7 @@ export function create(tvshow) {
 ### 22.  **Brett -**  Stub up the `<AddTVShow>` component (create basic class component and display the page name in a simple HTML element).  Create a CSS file for `<AddTVShow>`, (add a flex display, centering, and a margin) and import it within the component.
 ```
 mkdir src/pages/AddTVShow
-touch src/pages/AddTVShow.jsx src/pages/AddTVShow.css
+touch src/pages/AddTVShow/AddTVShow.jsx src/pages/AddTVShow/AddTVShow.css
 ```
 ```css
 /* AddTVShow.css */
