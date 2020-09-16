@@ -12,6 +12,7 @@ import * as movieAPI from '../../services/movies-api'
 import * as tvshowAPI from '../../services/tvshows-api'
 import EditMovie from '../EditMovie/EditMovie'
 import AddTVShow from '../AddTVShow/AddTVShow'
+import TVShowList from '../TVShowList/TVShowList';
 
 
 
@@ -138,7 +139,12 @@ class App extends Component {
               <Redirect to='/login' />
       }
         />
-
+        <Route exact path='/tvshows' render={() => 
+        <TVShowList 
+          tvshows = {this.state.tvshows}
+          user={this.state.user}
+        />
+      } />
       </>
     );
   }
