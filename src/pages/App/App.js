@@ -9,7 +9,10 @@ import Landing from '../Landing/Landing'
 import AddMovie from '../AddMovie/AddMovie'
 import MovieList from '../MovieList/MovieList';
 import * as movieAPI from '../../services/movies-api'
+import * as tvshowAPI from '../../services/tvshows-api'
 import EditMovie from '../EditMovie/EditMovie'
+import AddTVShow from '../AddTVShow/AddTVShow'
+
 
 
 class App extends Component {
@@ -34,6 +37,14 @@ class App extends Component {
     this.setState(state => ({
       movies: [...state.movies, newMovie]
     }), () => this.props.history.push('/movies'));
+  }
+
+  handleAddTVShow = async newTVShowData => {
+    const newTVShow = await tvshowAPI.create(newTVShowData);
+    newTVShow.addedBy = {name: this.state.user.name, _id: this.state.user._id}
+    this.setState(state => ({
+      tvshows: [...state.tvshows, newTVShow]
+    }), () => this.props.history.push('/tvshows'));
   }
 
   handleDeleteMovie = async id => {
@@ -105,6 +116,15 @@ class App extends Component {
               handleDeleteMovie={this.handleDeleteMovie}
             />}
           />
+        <Route exact path='/tvshows/add' render={() => 
+          authService.getUser() ?
+          <AddTVShow 
+            handleAddTVShow = {this.handleAddTVShow}
+            user={this.state.user}
+          />
+          :
+          <Redirect to='/login' />
+          }/>
         <Route 
         exact path='/edit' render={({location}) =>
         authService.getUser() ?
