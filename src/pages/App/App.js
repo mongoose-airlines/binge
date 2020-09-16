@@ -141,28 +141,21 @@ class App extends Component {
         <Route 
         exact path='/edit' render={({location}) =>
         authService.getUser() ?
-              <EditMovie 
-                handleUpdateMovie={this.handleUpdateMovie}
-                location={location}
-                user={this.state.user}
-              />
-              :
-              <Redirect to='/login' />
-      }
-        />
+          <EditMovie 
+            handleUpdateMovie={this.handleUpdateMovie}
+            location={location}
+            user={this.state.user}
+          />
+          :
+          <Redirect to='/login' />
+        }/>
         <Route exact path='/tvshows' render={() => 
-        <TVShowList 
-          tvshows = {this.state.tvshows}
-          user={this.state.user}
-        />
-      } />
-      <Route exact path='/tvshows' render={() => 
-        <TVShowList 
-          tvshows = {this.state.tvshows}
-          user={this.state.user}
-          handleDeleteTVShow={this.handleDeleteTVShow}
-        />
-      }/>
+          <TVShowList 
+            tvshows = {this.state.tvshows}
+            user={this.state.user}
+            handleDeleteTVShow={this.handleDeleteTVShow}
+          />
+        }/>
       </>
     );
   }
