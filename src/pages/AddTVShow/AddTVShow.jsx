@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import TVShowCard from '../../components/TVShowCard/TVShowCard'
+
 import './AddTVShow.css';
 
 class AddTVShow extends Component {
