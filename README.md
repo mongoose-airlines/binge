@@ -23,7 +23,7 @@
   -  ~~Add Nav Bar with links to several paths~~ (done)
   -  Create .env file and add `DATABASE_URL` and `SECRET`.  (Ben will share URL)
 
-<br><br>
+<br>
 
 ---
 <br>
