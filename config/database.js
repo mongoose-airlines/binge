@@ -4,7 +4,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateInd
 const db = mongoose.connection;
 
 db.on('connected', () => {
-    console.log(`Mongoose connected to ${db.host}.`)
+	console.log(`Mongoose connected to ${db.host}.`)
 })
 
 module.exports = mongoose;

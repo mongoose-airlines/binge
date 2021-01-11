@@ -331,7 +331,7 @@ export function create(movie) {
 ### 8.   **Erin -**  Stub up the `<AddMovie>` component (create basic class component and display the page name in a simple HTML element).  Create a CSS file for `<AddMovie>`, (add a flex display, centering, and a margin) and import it within the component.
 ```
 mkdir src/pages/AddMovie
-touch src/pages/AddMovie.jsx src/pages/AddMovie.css
+touch src/pages/AddMovie/AddMovie.jsx src/pages//AddMovie/AddMovie.css
 ```
 ```css
 /* AddMovie.css */

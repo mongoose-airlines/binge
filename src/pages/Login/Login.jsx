@@ -36,14 +36,12 @@ class Login extends Component {
             <div className="input-field col s12">
               <input type="text" autoComplete="off" id="email" className="active" value={this.state.email} name="email" onChange={this.handleChange} />
               <label htmlFor="email">Email</label>
-
             </div>
           </div>
           <div className="row">
             <div className="input-field col s12">
               <input type="password" autoComplete="off" className="active" id="password" value={this.state.pw} name="pw" onChange={this.handleChange} />
               <label htmlFor="password">Password</label>
-
             </div>
           </div>
           <div className="row">

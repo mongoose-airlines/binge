@@ -6,9 +6,19 @@ import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import authService from '../../services/authService';
 import Landing from '../Landing/Landing'
+import AddMovie from '../AddMovie/AddMovie'
+import * as movieAPI from '../../services/movies-api'
+import MovieList from '../MovieList/MovieList';
+import EditMovie from '../EditMovie/EditMovie';
+import TVShowList from '../TVShowList/TVShowList'
+import AddTVShow from '../AddTVShow/AddTVShow'
+import * as tvshowAPI from '../../services/tvshows-api'
+import EditTVShow from '../EditTVShow/EditTVShow'
+
 
 class App extends Component {
   state = {
+    movies: [],
     user: authService.getUser()
   }
 
@@ -19,6 +29,51 @@ class App extends Component {
 
   handleSignupOrLogin = () => {
     this.setState({user: authService.getUser()});
+  }
+
+  handleAddMovie = async newMovieData => {
+    const newMovie = await movieAPI.create(newMovieData);
+    newMovie.addedBy = {name: this.state.user.name, _id: this.state.user._id}
+    this.setState(state => ({
+      movies: [...state.movies, newMovie]
+    }), () => this.props.history.push('/movies'));
+  }
+
+  handleDeleteMovie = async id => {
+    if(authService.getUser()){
+      await movieAPI.deleteOne(id);
+      this.setState(state => ({
+        movies: state.movies.filter(m => m._id !== id)
+      }), () => this.props.history.push('/movies'));
+    } else {
+      this.props.history.push('/login')
+    }
+  }
+
+  handleUpdateMovie = async updatedMovieData => {
+    const updatedMovie = await movieAPI.update(updatedMovieData);
+    const newMoviesArray = this.state.movies.map(m => 
+      m._id === updatedMovie._id ? updatedMovie : m
+    );
+    this.setState(
+      {movies: newMoviesArray},
+      () => this.props.history.push('/movies')
+    );
+  }
+
+  handleAddTVShow = async newTVShowData => {
+    await tvshowAPI.create(newTVShowData);
+    this.props.history.push('/tvshows');
+  }
+
+  handleUpdateTVShow = async updatedTVShowData => {
+    await tvshowAPI.update(updatedTVShowData);
+    this.props.history.push('/tvshows')
+  }
+
+  async componentDidMount() {
+    const movies = await movieAPI.getAll();
+    this.setState({movies})
   }
 
   render () {
@@ -42,6 +97,56 @@ class App extends Component {
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
           />
+        }/>
+        <Route exact path='/movies/add' render={() => 
+          authService.getUser() ?
+            <AddMovie 
+              handleAddMovie = {this.handleAddMovie}
+              user={this.state.user}
+            />
+          :
+            <Redirect to='/login' />
+        }/>
+        <Route exact path='/movies' render={() => 
+          <MovieList 
+            movies = {this.state.movies}
+            user={this.state.user}
+            handleDeleteMovie={this.handleDeleteMovie}
+          />
+        }/>
+        <Route exact path='/edit' render={({ location }) => 
+          authService.getUser() ?
+            <EditMovie
+              handleUpdateMovie={this.handleUpdateMovie}
+              location={location}
+              user={this.state.user}
+            />
+          :
+            <Redirect to='/login'/>
+        }/>
+        <Route exact path='/tvshows' render={() => 
+          <TVShowList 
+            user={this.state.user}
+          />
+        }/>
+        <Route exact path='/tvshows/add' render={() => 
+          authService.getUser() ?
+            <AddTVShow 
+              user={this.state.user}
+              handleAddTVShow={this.handleAddTVShow}
+            />
+          :
+            <Redirect to='/login' />
+        }/>
+        <Route exact path='/editTV' render={({location}) => 
+          authService.getUser() ?
+            <EditTVShow
+              handleUpdateTVShow={this.handleUpdateTVShow}
+              location={location}
+              user={this.state.user}
+            />
+            :
+            <Redirect to='/login' />
         }/>
       </>
     );
