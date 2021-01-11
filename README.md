@@ -73,7 +73,7 @@ const movieSchema = new Schema({
 	genre: {
 		type: String
 	},
-	imdbRating: {
+	imdbRating: { 
 		type: Number
 	},
 	image: {
