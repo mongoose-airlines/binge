@@ -50,36 +50,36 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const movieSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    cast: {
-        type: [String],
-        required: true
-    },
-    description: {
-        type: String
-    },
-    mpaaRating: {
-        type: String
-    },
-    releaseDate: {
-        type: Number
-    },
-    runTime: {
-        type: Number
-    },
-    genre: {
-        type: String
-    },
-    imdbRating: {
-        type: Number
-    },
-    image: {
-        type: String
-    },
-    addedBy: { type: Schema.Types.ObjectId, ref: 'User'},
+	name: {
+		type: String,
+		required: true
+	},
+	cast: {
+		type: [String],
+		required: true
+	},
+	description: {
+		type: String
+	},
+	mpaaRating: {
+		type: String
+	},
+	releaseDate: {
+		type: Number
+	},
+	runTime: {
+		type: Number
+	},
+	genre: {
+		type: String
+	},
+	imdbRating: {
+		type: Number
+	},
+	image: {
+		type: String
+	},
+	addedBy: { type: Schema.Types.ObjectId, ref: 'User'},
 }, { timestamps: true })
 
 module.exports = mongoose.model('Movie', movieSchema);
@@ -93,33 +93,33 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tvshowSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    cast: {
-        type: [String],
-        required: true
-    },
-    description: {
-        type: String
-    },
-    seasons: {
-        type: Number
-    },
-    episodes: {
-        type: Number
-    },
-    releaseDate: {
-        type: Number
-    },
-    imdbRating: {
-        type: Number
-    },
-    image: {
-        type: String
-    },
-    addedBy: { type: Schema.Types.ObjectId, ref: 'User'},
+	name: {
+		type: String,
+		required: true
+	},
+	cast: {
+		type: [String],
+		required: true
+	},
+	description: {
+		type: String
+	},
+	seasons: {
+		type: Number
+	},
+	episodes: {
+		type: Number
+	},
+	releaseDate: {
+		type: Number
+	},
+	imdbRating: {
+		type: Number
+	},
+	image: {
+		type: String
+	},
+	addedBy: { type: Schema.Types.ObjectId, ref: 'User'},
 }, { timestamps: true })
 
 module.exports = mongoose.model('Tvshow', tvshowSchema);
@@ -214,8 +214,8 @@ const tvshowsCtrl = require('../controllers/tvshows');
 router.use(require('../config/auth'));
 
 function checkAuth(req, res, next) {
-    if (req.user) return next();
-    return res.status(401).json({msg: 'Not Authorized'});
+	if (req.user) return next();
+	return res.status(401).json({msg: 'Not Authorized'});
 }
 
 module.exports = router;
@@ -265,7 +265,7 @@ const BASE_URL = '/api/tvshows/';
 ---
 <br>
 
-### 6.  **Brittany -**  Initialize state for movies & tv shows in App.js as empty arrays.
+### 6.  **Brittany -**  Initialize state for movies in App.js as an empty array.
 
 ```js
 // App.js
@@ -274,7 +274,6 @@ const BASE_URL = '/api/tvshows/';
 .
 state = {
   movies: [],
-  tvshows: [],
   user: authService.getUser()
 }
 .
@@ -316,9 +315,9 @@ function create(req, res) {
 // services/movies-api.js
 export function create(movie) {
   return fetch(BASE_URL, {
-      method: "POST",
-      headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
-      body: JSON.stringify(movie)
+		method: "POST",
+		headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+		body: JSON.stringify(movie)
   }, {mode: "cors"})
   .then(res => res.json());
 }
@@ -331,7 +330,7 @@ export function create(movie) {
 ### 8.   **Erin -**  Stub up the `<AddMovie>` component (create basic class component and display the page name in a simple HTML element).  Create a CSS file for `<AddMovie>`, (add a flex display, centering, and a margin) and import it within the component.
 ```
 mkdir src/pages/AddMovie
-touch src/pages/AddMovie.jsx src/pages/AddMovie.css
+touch src/pages/AddMovie/AddMovie.jsx src/pages/AddMovie/AddMovie.css
 ```
 ```css
 /* AddMovie.css */
@@ -349,14 +348,14 @@ import React, { Component } from 'react';
 import './AddMovie.css';
 
 class AddMovie extends Component {
-    state = {
-    };
+	state = {
+	};
 
-    render() {
-        return (
-            <h3>Add Movie Page</h3>
-        )
-    }
+	render() {
+		return (
+			<h3>Add Movie Page</h3>
+		)
+	}
 }
 
 export default AddMovie;
@@ -404,134 +403,135 @@ import React, { Component } from 'react';
 import './AddMovie.css';
 
 class AddMovie extends Component {
-    state = {
-        invalidForm: true,
-        formData: {
-            name: '',
-            cast: [],
-            description: '',
-            mpaaRating: '',
-            releaseDate: '',
-            runTime: '',
-            genre: '',
-            imdbRating: '',
-            image: '',
-        },
-    };
+	state = {
+		invalidForm: true,
+		formData: {
+			name: '',
+			cast: [],
+			description: '',
+			mpaaRating: '',
+			releaseDate: '',
+			runTime: '',
+			genre: '',
+			imdbRating: '',
+			image: '',
+		},
+	};
 
-    formRef = React.createRef();
+	formRef = React.createRef();
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.handleAddMovie(this.state.formData);
-      };
+	handleSubmit = e => {
+		e.preventDefault();
+		this.props.handleAddMovie(this.state.formData);
+		};
 
-    handleChange = e => {
-        const formData = {...this.state.formData, [e.target.name]: e.target.value};
-        this.setState({
-        formData,
-        invalidForm: !this.formRef.current.checkValidity()
-        });
-    };
+	handleChange = e => {
+		const formData = {...this.state.formData, [e.target.name]: e.target.value};
+		this.setState({
+		formData,
+		invalidForm: !this.formRef.current.checkValidity()
+		});
+	};
 
 
-    render() {
-        return (
-            <>
-                <div className="AddMovie">
-                    <form className="col s12" ref={this.formRef} onSubmit={this.handleSubmit}>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="name" id="movie_name" type="text" className="active" value={this.state.formData.name} onChange={this.handleChange} required />
-                            <label htmlFor="movie_name">Movie Name</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="cast" id="cast" type="text" className="active" value={this.state.formData.cast} onChange={this.handleChange} required/>
-                            <label htmlFor="cast">Cast (Separate with commas)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="description" id="description" type="text" className="active" value={this.state.formData.description} onChange={this.handleChange}/>
-                            <label htmlFor="description">Description</label>
-                            </div>
-                        </div>
-                        <div><label>MPAA Rating</label>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="G" onChange={this.handleChange} type="radio"/>
-                                    <span>G</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="PG" onChange={this.handleChange} type="radio"/>
-                                    <span>PG</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="PG-13" onChange={this.handleChange} type="radio"/>
-                                    <span>PG-13</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="R" onChange={this.handleChange} type="radio"/>
-                                    <span>R</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="NC-17" onChange={this.handleChange} type="radio"/>
-                                    <span>NC-17</span>
-                                </label>
-                            </p>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="releaseDate" id="release" type="text" className="active" value={this.state.formData.releaseDate} onChange={this.handleChange}/>
-                            <label htmlFor="release">Release Year</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="runTime" id="runtime" type="text" className="active" value={this.state.formData.runTime} onChange={this.handleChange}/>
-                            <label htmlFor="runtime">Run-time (Min)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="genre" id="genre" type="text" className="active" value={this.state.formData.genre} onChange={this.handleChange}/>
-                            <label htmlFor="genre">Genre</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="imdbRating" id="imdb" type="text" className="active" value={this.state.formData.imdbRating} onChange={this.handleChange}/>
-                            <label htmlFor="imdb">IMDB Rating</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="image" id="imageURL" type="text" className="active" value={this.state.formData.image} onChange={this.handleChange}/>
-                            <label htmlFor="imageURL">Image URL</label>
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn red"
-                            disabled={this.state.invalidForm}
-                        ><i className="material-icons left">add</i>
-                            Add Movie
-                        </button>                           
-                    </form>
-                </div>
-            </>
-        )
-    }
+	render() {
+		return (
+			<>
+				<div className="AddMovie">
+					<form className="col s12" ref={this.formRef} onSubmit={this.handleSubmit}>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="name" id="movie_name" type="text" className="active" value={this.state.formData.name} onChange={this.handleChange} required />
+								<label htmlFor="movie_name">Movie Name</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="cast" id="cast" type="text" className="active" value={this.state.formData.cast} onChange={this.handleChange} required/>
+								<label htmlFor="cast">Cast (Separate with commas)</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="description" id="description" type="text" className="active" value={this.state.formData.description} onChange={this.handleChange}/>
+								<label htmlFor="description">Description</label>
+							</div>
+						</div>
+						<div><label>MPAA Rating</label>
+							<p>
+								<label>  
+									<input className="with-gap" name="mpaaRating" value="G" onChange={this.handleChange} type="radio"/>
+									<span>G</span>
+								</label>
+							</p>
+							<p>
+								<label>  
+									<input className="with-gap" name="mpaaRating" value="PG" onChange={this.handleChange} type="radio"/>
+									<span>PG</span>
+								</label>
+							</p>
+							<p>
+								<label>  
+									<input className="with-gap" name="mpaaRating" value="PG-13" onChange={this.handleChange} type="radio"/>
+									<span>PG-13</span>
+								</label>
+							</p>
+							<p>
+								<label>  
+									<input className="with-gap" name="mpaaRating" value="R" onChange={this.handleChange} type="radio"/>
+									<span>R</span>
+								</label>
+							</p>
+							<p>
+								<label>  
+									<input className="with-gap" name="mpaaRating" value="NC-17" onChange={this.handleChange} type="radio"/>
+									<span>NC-17</span>
+								</label>
+							</p>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="releaseDate" id="release" type="text" className="active" value={this.state.formData.releaseDate} onChange={this.handleChange}/>
+								<label htmlFor="release">Release Year</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="runTime" id="runtime" type="text" className="active" value={this.state.formData.runTime} onChange={this.handleChange}/>
+								<label htmlFor="runtime">Run-time (Min)</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="genre" id="genre" type="text" className="active" value={this.state.formData.genre} onChange={this.handleChange}/>
+								<label htmlFor="genre">Genre</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="imdbRating" id="imdb" type="text" className="active" value={this.state.formData.imdbRating} onChange={this.handleChange}/>
+								<label htmlFor="imdb">IMDB Rating</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="image" id="imageURL" type="text" className="active" value={this.state.formData.image} onChange={this.handleChange}/>
+								<label htmlFor="imageURL">Image URL</label>
+							</div>
+						</div>
+						<button
+								type="submit"
+								className="btn red"
+								disabled={this.state.invalidForm}
+						>
+							<i className="material-icons left">add</i>
+							Add Movie
+						</button>                           
+					</form>
+				</div>
+			</>
+		)
+	}
 }
 
 export default AddMovie;
@@ -651,9 +651,9 @@ import React from 'react';
 import './MovieList.css';
 
 function MovieList(props) {
-    return (
-        <h3>Movie List</h3>
-    );
+	return (
+		<h3>Movie List</h3>
+	);
 }
 
 export default MovieList;
@@ -687,9 +687,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function MovieCard() {
-    return(
-        <h3>Movie Card</h3>
-    ) 
+	return(
+		<h3>Movie Card</h3>
+	) 
 }
 
 export default MovieCard;
@@ -735,8 +735,8 @@ function deleteOne(req, res) {
 // services/movies-api.js
 export function deleteOne(id) {
   return fetch(`${BASE_URL}${id}`, {
-      method: 'DELETE',
-      headers: {'Authorization': 'Bearer ' + tokenService.getToken()}
+		method: 'DELETE',
+		headers: {'Authorization': 'Bearer ' + tokenService.getToken()}
   }, {mode: "cors"})
   .then(res => res.json());
 }
@@ -778,20 +778,20 @@ import MovieCard from '../../components/MovieCard/MovieCard';
 import './MovieList.css';
 
 function MovieList(props) {
-    return (
-        <> 
-            <div className='MovieList-grid'>
-                {props.movies.map(movie =>
-                    <MovieCard 
-                        key={movie._id}
-                        movie={movie}
-                        handleDeleteMovie={props.handleDeleteMovie}
-                        user={props.user}
-                    />
-                )}
-            </div>
-        </>
-    );
+	return (
+		<> 
+			<div className='MovieList-grid'>
+				{props.movies.map(movie =>
+					<MovieCard 
+						key={movie._id}
+						movie={movie}
+						handleDeleteMovie={props.handleDeleteMovie}
+						user={props.user}
+					/>
+				)}
+			</div>	
+		</>
+	);
 }
 
 export default MovieList;
@@ -806,46 +806,47 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function MovieCard({ user, movie, handleDeleteMovie}) {
-    return(
-        <>
-            <div className="card">
-                <div className="card-image waves-effect waves-block waves-light">
-                    <img alt="movie" className="activator" src={movie.image ? movie.image : "https://www.cebodtelecom.com/wp-content/uploads/2014/09/related_post_no_available_image.png"} onClick={()=> {}}/>
-                </div>
-                <div className="card-content">
-                    <span className="card-title activator grey-text text-darken-4">{movie.name}<i className="material-icons right">more_vert</i></span>
-                    <p>{movie.description}</p>
-                </div>
-                <div className="card-reveal">
-                    <span className="card-title grey-text text-darken-4">{movie.name}<i className="material-icons right">close</i></span>
-                    <h6>Added By:  {movie.addedBy.name}</h6>
-                    <h6>IMDB Rating: {movie.imdbRating}</h6>
-                    <div>Genre:  {movie.genre}</div>
-                    <div>Release Year:  {movie.releaseDate}</div>
-                    <div>Cast: {movie.cast.join(', ')}</div>
-                    <div>MPAA Rating:  {movie.mpaaRating}</div>
-                    <p>{movie.description}</p>
-                    {user && (user._id === movie.addedBy._id) &&
-                        <>
-                            <button type="submit" className="btn red" onClick={() => handleDeleteMovie(movie._id)}>
-                            <i className="material-icons left">delete</i>    
-                                Delete Movie
-                            </button>
-                            <Link 
-                                className="btn yellow black-text"
-                                to={{
-                                    pathname: '/edit',
-                                    state: {movie}
-                                }}
-                            ><i className="material-icons left">build</i>
-                                Edit Movie
-                            </Link>
-                        </>
-                        }
-                </div>
-            </div>
-        </>
-    ) 
+	return(
+		<>
+			<div className="card">
+				<div className="card-image waves-effect waves-block waves-light">
+					<img alt="movie" className="activator" src={movie.image ? movie.image : "https://www.cebodtelecom.com/wp-content/uploads/2014/09/related_post_no_available_image.png"} onClick={()=> {}}/>
+				</div>
+				<div className="card-content">
+					<span className="card-title activator grey-text text-darken-4">{movie.name}<i className="material-icons right">more_vert</i></span>
+					<p>{movie.description}</p>
+				</div>
+				<div className="card-reveal">
+					<span className="card-title grey-text text-darken-4">{movie.name}<i className="material-icons right">close</i></span>
+					<h6>Added By:  {movie.addedBy.name}</h6>
+					<h6>IMDB Rating: {movie.imdbRating}</h6>
+					<div>Genre:  {movie.genre}</div>
+					<div>Release Year:  {movie.releaseDate}</div>
+					<div>Cast: {movie.cast.join(', ')}</div>
+					<div>MPAA Rating:  {movie.mpaaRating}</div>
+					<p>{movie.description}</p>
+					{user && (user._id === movie.addedBy._id) &&
+						<>
+							<button type="submit" className="btn red" onClick={() => handleDeleteMovie(movie._id)}>
+								<i className="material-icons left">delete</i>    
+								Delete Movie
+							</button>
+							<Link 
+								className="btn yellow black-text"
+								to={{
+									pathname: '/edit',
+									state: {movie}
+								}}
+							>
+								<i className="material-icons left">build</i>
+								Edit Movie
+							</Link>
+						</>
+					}
+				</div>
+			</div>
+		</>
+	) 
 }
 
 export default MovieCard;
@@ -902,9 +903,9 @@ function update(req, res) {
 // services/movies-api.js
 export function update(movie) {
   return fetch(`${BASE_URL}${movie._id}`, {
-      method: "PUT",
-      headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
-      body: JSON.stringify(movie)
+		method: "PUT",
+		headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+		body: JSON.stringify(movie)
   }, {mode: "cors"})
   .then(res => res.json());
 }
@@ -953,133 +954,135 @@ import './EditMovie.css'
 import { Link } from 'react-router-dom';
 
 class EditMovie extends Component {
-    state = {
-        invalidForm: false,
-        formData: this.props.location.state.movie,
-        Name: "Edit Movie"
-    };
+	state = {
+		invalidForm: false,
+		formData: this.props.location.state.movie,
+		Name: "Edit Movie"
+	};
 
-    formRef = React.createRef();
+	formRef = React.createRef();
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.handleUpdateMovie(this.state.formData);
-      };
+	handleSubmit = e => {
+		e.preventDefault();
+		this.props.handleUpdateMovie(this.state.formData);
+		};
 
-    handleChange = e => {
-        const formData = {...this.state.formData, [e.target.name]: e.target.value};
-        this.setState({
-        formData,
-        invalidForm: !this.formRef.current.checkValidity()
-        });
-    };
+	handleChange = e => {
+		const formData = {...this.state.formData, [e.target.name]: e.target.value};
+		this.setState({
+		formData,
+		invalidForm: !this.formRef.current.checkValidity()
+		});
+	};
 
 
-    render() {
-        return (
-            <>
-                <div className="EditMovie">
-                    <form className="col s12" ref={this.formRef} onSubmit={this.handleSubmit}>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="name" id="movie_name" type="text" className="active" value={this.state.formData.name} onChange={this.handleChange} required />
-                            <label className="active" htmlFor="movie_name">Movie Name</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="cast" id="cast" type="text" className="active" value={this.state.formData.cast.join(', ')} onChange={this.handleChange} required/>
-                            <label className="active" htmlFor="cast">Cast (Separate with commas)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="description" id="description" type="text" className="active" value={this.state.formData.description} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="description">Description</label>
-                            </div>
-                        </div>
-                        <div><label>MPAA Rating</label>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="G" checked={this.state.formData.mpaaRating === "G" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>G</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="PG" checked={this.state.formData.mpaaRating === "PG" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>PG</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="PG-13" checked={this.state.formData.mpaaRating === "PG-13" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>PG-13</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="R" checked={this.state.formData.mpaaRating === "R" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>R</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="NC-17" checked={this.state.formData.mpaaRating === "NC-17" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>NC-17</span>
-                                </label>
-                            </p>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="releaseDate" id="release" type="text" className="active" value={this.state.formData.releaseDate} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="release">Release Year</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="runTime" id="runtime" type="text" className="active" value={this.state.formData.runTime} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="runtime">Run-time (Min)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="genre" id="genre" type="text" className="active" value={this.state.formData.genre} onChange={this.handleChange}/>
-                            <label className="active"htmlFor="genre">Genre</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="imdbRating" id="imdb" type="text" className="active" value={this.state.formData.imdbRating} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="imdb">IMDB Rating</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="image" id="imageURL" type="text" className="active" value={this.state.formData.image} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="imageURL">Image URL</label>
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn green"
-                            disabled={this.state.invalidForm}
-                        ><i className="material-icons left">edit</i>
-                            Update Movie
-                        </button>
-                        <Link 
-                            className="btn red"
-                            to={{
-                                pathname: '/movies'
-                            }}
-                        ><i className="material-icons left">undo</i>
-                        Cancel
-                        </Link>                            
-                    </form>
-                </div>
-            </>
-        )
-    }
+	render() {
+		return (
+			<>
+				<div className="EditMovie">
+					<form className="col s12" ref={this.formRef} onSubmit={this.handleSubmit}>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="name" id="movie_name" type="text" className="active" value={this.state.formData.name} onChange={this.handleChange} required />
+								<label className="active" htmlFor="movie_name">Movie Name</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="cast" id="cast" type="text" className="active" value={this.state.formData.cast.join(', ')} onChange={this.handleChange} required/>
+								<label className="active" htmlFor="cast">Cast (Separate with commas)</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="input-field col s12">
+								<input name="description" id="description" type="text" className="active" value={this.state.formData.description} onChange={this.handleChange}/>
+								<label className="active" htmlFor="description">Description</label>
+							</div>
+						</div>
+							<div><label>MPAA Rating</label>
+								<p>
+									<label>  
+										<input className="with-gap" name="mpaaRating" value="G" checked={this.state.formData.mpaaRating === "G" ? true : "" } onChange={this.handleChange} type="radio"/>
+										<span>G</span>
+									</label>
+								</p>
+								<p>
+									<label>  
+										<input className="with-gap" name="mpaaRating" value="PG" checked={this.state.formData.mpaaRating === "PG" ? true : "" } onChange={this.handleChange} type="radio"/>
+										<span>PG</span>
+									</label>
+								</p>
+								<p>
+									<label>  
+										<input className="with-gap" name="mpaaRating" value="PG-13" checked={this.state.formData.mpaaRating === "PG-13" ? true : "" } onChange={this.handleChange} type="radio"/>
+										<span>PG-13</span>
+									</label>
+								</p>
+								<p>
+									<label>  
+										<input className="with-gap" name="mpaaRating" value="R" checked={this.state.formData.mpaaRating === "R" ? true : "" } onChange={this.handleChange} type="radio"/>
+										<span>R</span>
+									</label>
+								</p>
+								<p>
+										<label>  
+											<input className="with-gap" name="mpaaRating" value="NC-17" checked={this.state.formData.mpaaRating === "NC-17" ? true : "" } onChange={this.handleChange} type="radio"/>
+											<span>NC-17</span>
+										</label>
+								</p>
+							</div>
+							<div className="row">
+								<div className="input-field col s12">
+									<input name="releaseDate" id="release" type="text" className="active" value={this.state.formData.releaseDate} onChange={this.handleChange}/>
+									<label className="active" htmlFor="release">Release Year</label>
+								</div>
+							</div>
+							<div className="row">
+								<div className="input-field col s12">
+									<input name="runTime" id="runtime" type="text" className="active" value={this.state.formData.runTime} onChange={this.handleChange}/>
+									<label className="active" htmlFor="runtime">Run-time (Min)</label>
+								</div>
+							</div>
+							<div className="row">
+								<div className="input-field col s12">
+									<input name="genre" id="genre" type="text" className="active" value={this.state.formData.genre} onChange={this.handleChange}/>
+									<label className="active"htmlFor="genre">Genre</label>
+								</div>
+							</div>
+							<div className="row">
+								<div className="input-field col s12">
+									<input name="imdbRating" id="imdb" type="text" className="active" value={this.state.formData.imdbRating} onChange={this.handleChange}/>
+									<label className="active" htmlFor="imdb">IMDB Rating</label>
+								</div>
+							</div>
+							<div className="row">
+								<div className="input-field col s12">
+									<input name="image" id="imageURL" type="text" className="active" value={this.state.formData.image} onChange={this.handleChange}/>
+									<label className="active" htmlFor="imageURL">Image URL</label>
+								</div>
+							</div>
+							<button
+									type="submit"
+									className="btn green"
+									disabled={this.state.invalidForm}
+							>
+							<i className="material-icons left">edit</i>
+								Update Movie
+							</button>
+							<Link 
+								className="btn red"
+								to={{
+									pathname: '/movies'
+								}}
+							>
+								<i className="material-icons left">undo</i>
+								Cancel
+							</Link>                            
+					</form>
+				</div>
+			</>
+		)
+	}
 }
 
 export default EditMovie;
@@ -1101,7 +1104,7 @@ import EditMovie from '../EditMovie/EditMovie';
       location={location}
       user={this.state.user}
     />
-  :
+  	:
     <Redirect to='/login'/>
 }/>
 ```
@@ -1139,9 +1142,9 @@ function create(req, res) {
 // services/tvshows-api.js
 export function create(tvshow) {
   return fetch(BASE_URL, {
-      method: "POST",
-      headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
-      body: JSON.stringify(tvshow)
+		method: "POST",
+		headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+		body: JSON.stringify(tvshow)
   }, {mode: "cors"})
   .then(res => res.json());
 }
