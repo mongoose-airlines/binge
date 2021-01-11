@@ -1,5 +1,5 @@
 
-### 22.  ** -**  Stub up the `<AddTVShow>` component (create basic class component and display the page name in a simple HTML element).  Create a CSS file for `<AddTVShow>`, (add a flex display, centering, and a margin) and import it within the component.
+### 23.  ** -**  Stub up the `<AddTVShow>` component (create basic class component and display the page name in a simple HTML element).  Create a CSS file for `<AddTVShow>`, (add a flex display, centering, and a margin) and import it within the component.
 ```
 mkdir src/pages/AddTVShow
 touch src/pages/AddTVShow.jsx src/pages/AddTVShow.css
@@ -36,7 +36,7 @@ export default AddTVShow;
 <br>
 
   
-### 23.  ** -**  Import the `<AddTVShow>` component in App.js and write a Route for it such that the user is redirected to log in if they aren't.  Import the function to create a tv show in App.js, write a handleAddTVShow function, and pass it to `<AddTVShow>` along with the user stored in state.
+### 24.  ** -**  Import the `<AddTVShow>` component in App.js and write a Route for it such that the user is redirected to log in if they aren't.  Import the function to create a tv show in App.js, write a handleAddTVShow function, and pass it to `<AddTVShow>` along with the user stored in state.
 ```js
 // App.js
 import { Route, Redirect } from 'react-router-dom'
@@ -68,7 +68,7 @@ handleAddTVShow = async newTVShowData => {
 ---
 <br>
   
-### 24.  ** -**  Add state in `<AddTVShow>` (for formData and form validation).  Create a formRef in `<AddTVShow>` and display a form with all tv show fields and a button to submit the form.  Write the handleSubmit and handleChange functions on `<AddTVShow>`.
+### 25.  ** -**  Add state in `<AddTVShow>` (for formData and form validation).  Create a formRef in `<AddTVShow>` and display a form with all tv show fields and a button to submit the form.  Write the handleSubmit and handleChange functions on `<AddTVShow>`.
 ```js
 // AddTVShow.jsx
 import React, { Component } from 'react';
@@ -177,7 +177,7 @@ export default AddTVShow;
 <br>
    
    
-### 25.  ** -**  Write the route / controller function in the back end to index tv shows.  Write the API call in tvshows-api.js to index tv shows.
+### 26.  ** -**  Write the route / controller function in the back end to index tv shows.  Write the API call in tvshows-api.js to index tv shows.
 
 ```js
 // routes/tvshows.js
@@ -229,7 +229,7 @@ export function getAll() {
 ---
 <br>
     
-### 26.  ** -**  Update the componentDidMount lifecycle method to App.js to get all tvshows from the API and store them in state.
+### 27.  ** -**  Update the componentDidMount lifecycle method to App.js to get all tvshows from the API and store them in state.
 ```js
 .
 .
@@ -246,7 +246,7 @@ async componentDidMount() {
 ---
 <br>
 
-### 27.  ** -**  Stub up the `<TVShowList>` component (create a basic function component and display the page name in a simple HTML element)  Create a CSS file for the `<TVShowList>` page and import it within the component.  Import the `<TVShowList>` component in App.js and write a route for it, (pass state for tv shows and user as props).
+### 28.  ** -**  Stub up the `<TVShowList>` component (create a basic function component and display the page name in a simple HTML element)  Create a CSS file for the `<TVShowList>` page and import it within the component.  Import the `<TVShowList>` component in App.js and write a route for it, (pass state for tv shows and user as props).
 ``` 
 mkdir src/pages/TVShowList
 touch src/pages/TVShowList/TVShowList.jsx 
@@ -315,7 +315,7 @@ import TVShowList from '../TVShowList/TVShowList';
 <br>
 
   
-### 28.  ** -**  Create a `<TVShowCard>` folder/component in the 'components' directory, stub it up with a presentational component that displays a message when rendered (don't display any props yet).
+### 29.  ** -**  Create a `<TVShowCard>` folder/component in the 'components' directory, stub it up with a presentational component that displays a message when rendered (don't display any props yet).
 ```
 mkdir src/components/TVShowCard
 touch src/components/TVShowCard/TVShowCard.jsx
@@ -336,7 +336,7 @@ export default TVShowCard;
 <br>
 
   
-### 29.  ** -**  Write the router / controller for deleting a tv show.  Write the API call in tvshow-api.js to handle deleting a tv show by id.  Write a handleDeleteTVShow function in App.js and pass it as props to `<TVShowList>`.
+### 30.  ** -**  Write the router / controller for deleting a tv show.  Write the API call in tvshow-api.js to handle deleting a tv show by id.  Write a handleDeleteTVShow function in App.js and pass it as props to `<TVShowList>`.
 ```js
 // routes/tvshows.js
 .
@@ -409,7 +409,7 @@ handleDeleteTVShow = async id => {
 ---
 <br>
     
-### 30.  ** -**  Import `<TVShowCard>` component in the `<TVShowList>` component and them map props (tvshow, delete, and user) to `<TVShowCard>` components to be rendered.  Add a Materialize 'Card' to display the info passed in as props for a tv show on the `<TVShowCard>` component, implement a `<Link>` component to add a Materialize button that will pass the movie to '/edit'.
+### 31.  ** -**  Import `<TVShowCard>` component in the `<TVShowList>` component and them map props (tvshow, delete, and user) to `<TVShowCard>` components to be rendered.  Add a Materialize 'Card' to display the info passed in as props for a tv show on the `<TVShowCard>` component, implement a `<Link>` component to add a Materialize button that will pass the movie to '/edit'.
 ```js
 // TVShowList.jsx
 import React from 'react';
@@ -488,7 +488,7 @@ export default TVShowCard;
 ---
 <br>
     
-### 31.  ** -**  Write the router / controller for updating a tv show.  Write the API call in tvshows-api.js to handle updating a tv show by id.  Add a handleUpdateTVShow function in App.js.
+### 32.  ** -**  Write the router / controller for updating a tv show.  Write the API call in tvshows-api.js to handle updating a tv show by id.  Add a handleUpdateTVShow function in App.js.
 ```js
 // routes/tvshows.js
 const router = require('express').Router();
@@ -562,7 +562,7 @@ handleUpdateTVShow = async updatedTVShowData => {
 ---
 <br>
   
-### 32.  ** -**  Create an `<EditTVShow>` folder/component in the 'components' directory, stub it up with a class component.  Copy and paste the contents of `<AddTVShow>` to `<EditTVShow>`, then make changes to reflect editing (initialize state using location, change the 'Add' button to a 'Save' button, and add a `<Link>` for the user to cancel and be returned to the tv show list).
+### 33.  ** -**  Create an `<EditTVShow>` folder/component in the 'components' directory, stub it up with a class component.  Copy and paste the contents of `<AddTVShow>` to `<EditTVShow>`, then make changes to reflect editing (initialize state using location, change the 'Add' button to a 'Save' button, and add a `<Link>` for the user to cancel and be returned to the tv show list).
 ```
 mkdir src/pages/EditTVShow
 touch src/pages/EditTVShow/EditTVShow.jsx
@@ -718,7 +718,7 @@ export default EditMovie;
 ---
 <br>
 
-### 33.  ** -**  Import `<EditTVShow>` in App.js write a route for it (using location), and pass props (update function, user, and location).
+### 34.  ** -**  Import `<EditTVShow>` in App.js write a route for it (using location), and pass props (update function, user, and location).
 
 ```js
 // App.js
