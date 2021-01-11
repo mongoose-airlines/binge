@@ -83,12 +83,12 @@ const movieSchema = new Schema({
 }, { timestamps: true })
 
 module.exports = mongoose.model('Movie', movieSchema);
-
+ 
 ```
 
 
 ```js
-// tvshow.js
+// tvshow.jsx
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
