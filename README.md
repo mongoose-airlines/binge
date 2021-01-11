@@ -121,7 +121,7 @@ const tvshowSchema = new Schema({
 	},
 	addedBy: { type: Schema.Types.ObjectId, ref: 'User'},
 }, { timestamps: true })
-
+ 
 module.exports = mongoose.model('Tvshow', tvshowSchema);
 
 ```
