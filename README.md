@@ -2,11 +2,12 @@
 - This repository contains the starter code for Binge. 
 ---
 ## Game-Plan
-- Start with previewing the app and talking about models/data
+- Start with previewing the app and talking about models/data structure (ERD's)
 - Discuss pseudocode
-- Clone the jwt-auth-template repo
+- Discuss git workflow
+- Fork and clone this repo
 - One student at a time, we'll progress through the pseudocode
-- Each student will work in a branch locally, then push up and create a pull request
+- Each student will share their screen, checkout into a new branch, type out and explain their code, then push their branch to their forked repo in order to create a pull request
 
 ---
 ## Step-By-Step
@@ -1103,7 +1104,23 @@ import EditMovie from '../EditMovie/EditMovie';
 ```
 ---
 <br>
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### 21. **Alexandria -**  Write the route / controller function in the back end for creating a tv show.  Write the API call in tvshows-api.js to create a tv show.
 ```js
 // routes/tvshows.js
