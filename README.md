@@ -916,7 +916,8 @@ export function update(movie) {
 .
 .
 handleUpdateMovie = async updatedMovieData => {
-  const updatedMovie = await movieAPI.update(updatedMovieData);
+	const updatedMovie = await movieAPI.update(updatedMovieData);
+	updatedMovie.addedBy = {name: this.state.user.name, _id: this.state.user._id}
   const newMoviesArray = this.state.movies.map(m => 
     m._id === updatedMovie._id ? updatedMovie : m
   );
