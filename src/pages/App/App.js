@@ -9,6 +9,7 @@ import Landing from '../Landing/Landing'
 
 class App extends Component {
   state = {
+    movies: [],
     user: authService.getUser()
   }
 
