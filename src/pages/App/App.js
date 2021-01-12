@@ -14,7 +14,10 @@ class App extends Component {
     movies: [],
     user: authService.getUser()
   }
-
+  async componentDidMount() {
+    const movies = await movieAPI.getAll();
+    this.setState({movies})
+  }
   handleLogout = () => {
     authService.logout();
     this.setState({ user: null });
@@ -35,20 +38,20 @@ class App extends Component {
   render () {
     return (
       <>
-        <NavBar 
+        <NavBar
           user={this.state.user}
           handleLogout={this.handleLogout}
         />
         <Route exact path='/' render={() =>
           <Landing />
         }/>
-        <Route exact path='/signup' render={({ history }) => 
+        <Route exact path='/signup' render={({ history }) =>
           <Signup
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
           />
         }/>
-        <Route exact path='/login' render={({ history }) => 
+        <Route exact path='/login' render={({ history }) =>
           <Login
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
