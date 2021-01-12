@@ -12,7 +12,6 @@ import MovieList from '../MovieList/MovieList';
 import EditMovie from '../EditMovie/EditMovie';
 import TVShowList from '../TVShowList/TVShowList'
 import AddTVShow from '../AddTVShow/AddTVShow'
-import * as tvshowAPI from '../../services/tvshows-api'
 import EditTVShow from '../EditTVShow/EditTVShow'
 
 
@@ -60,16 +59,6 @@ class App extends Component {
       {movies: newMoviesArray},
       () => this.props.history.push('/movies')
     );
-  }
-
-  handleAddTVShow = async newTVShowData => {
-    await tvshowAPI.create(newTVShowData);
-    this.props.history.push('/tvshows');
-  }
-
-  handleUpdateTVShow = async updatedTVShowData => {
-    await tvshowAPI.update(updatedTVShowData);
-    this.props.history.push('/tvshows')
   }
 
   async componentDidMount() {
@@ -125,7 +114,7 @@ class App extends Component {
           :
             <Redirect to='/login'/>
         }/>
-        <Route exact path='/tvshows' render={() => 
+        <Route path='/tvshows' render={() => 
           <TVShowList 
             user={this.state.user}
           />
@@ -134,16 +123,13 @@ class App extends Component {
           authService.getUser() ?
             <AddTVShow 
               user={this.state.user}
-              handleAddTVShow={this.handleAddTVShow}
             />
           :
             <Redirect to='/login' />
         }/>
-        <Route exact path='/editTV' render={({location}) => 
+        <Route exact path='/editTV' render={() => 
           authService.getUser() ?
             <EditTVShow
-              handleUpdateTVShow={this.handleUpdateTVShow}
-              location={location}
               user={this.state.user}
             />
             :

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AddTVShow.css';
+import { useHistory } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm'
+import * as tvshowAPI from '../../services/tvshows-api'
 
 function AddTVShow(props) {
 
+  const history = useHistory();
   const [invalidForm, setValidForm] = useState(true);
   const formRef = useRef();
   const [state, handleChange] = useForm({
@@ -17,13 +20,18 @@ function AddTVShow(props) {
   image: ''
   })
 
+  async function handleAddTVShow(newTVShowData){
+    await tvshowAPI.create(newTVShowData);
+    history.push('/tvshows');
+  }
+
   useEffect(() => {
     formRef.current.checkValidity() ? setValidForm(false) : setValidForm(true);
   }, [state]);
 
   async function handleSubmit(e) {
     e.preventDefault()
-    props.handleAddTVShow(state)
+    handleAddTVShow(state)
   }
 
   return (

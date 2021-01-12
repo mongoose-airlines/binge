@@ -7,12 +7,17 @@ import TVShowCard from '../../components/TVShowCard/TVShowCard'
 function TVShowList(props) {
 
   const [tvshows, setTvshows] = useState([])
-
   const history = useHistory();
 
   async function handleDeleteTVShow(id){
     await tvshowAPI.deleteOne(id)
     setTvshows(tvshows.filter(t => t._id !== id))
+  }
+  
+  async function handleUpdateTVShow(updatedTVShowData){
+    const newTVShowData = await tvshowAPI.update(updatedTVShowData)
+    // setTvshows(tvshows.map(t => t._id === updatedTVShowData._id ? updatedTVShowData : t))
+    history.push('/tvshows')
   }
 
   useEffect(() => {
@@ -35,6 +40,7 @@ function TVShowList(props) {
             tvshow={tvshow}
             user={props.user}
             handleDeleteTVShow={handleDeleteTVShow}
+            handleUpdateTVShow={handleUpdateTVShow}
           />
         )}
       </div>

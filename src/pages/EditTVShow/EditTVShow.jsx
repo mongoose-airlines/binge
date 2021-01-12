@@ -3,7 +3,7 @@ import './EditTVShow.css';
 import { useForm } from '../../hooks/useForm'
 import { Link, useLocation } from 'react-router-dom'
 
-function AddTVShow(props) {
+function EditTVShow(props) {
 
   const location = useLocation()
   const [invalidForm, setValidForm] = useState(false);
@@ -13,10 +13,10 @@ function AddTVShow(props) {
   useEffect(() => {
     formRef.current.checkValidity() ? setValidForm(false) : setValidForm(true);
   }, [state]);
-
+ 
   async function handleSubmit(e) {
     e.preventDefault()
-    props.handleUpdateTVShow(state)
+    location.handleUpdateTVShow(state)
   }
 
   return (
@@ -93,4 +93,4 @@ function AddTVShow(props) {
 }
 
 
-export default AddTVShow;
+export default EditTVShow;
