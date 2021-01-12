@@ -3,7 +3,11 @@ const moviesCtrl = require('../controllers/movies');
 
 //Public Routes
 
+
+// Protected Routes
 router.use(require('../config/auth'));
+router.post('/', checkAuth, moviesCtrl.create)
+
 
 function checkAuth(req, res, next) {
     if (req.user) return next();
