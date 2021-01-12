@@ -10,4 +10,9 @@ export function create(movie) {
           body: JSON.stringify(movie)
     }, {mode: "cors"})
     .then(res => res.json());
-  }
+}
+
+export function getAll() {
+      return fetch(BASE_URL, {mode: "cors"})
+      .then(res => res.json())
+}
