@@ -3,7 +3,8 @@ const Movie = require('../models/movie')
 module.exports = {
    create, 
    index,
-   delete: deleteOne
+   delete: deleteOne,
+   update
 }
 
 function create(req, res) {
@@ -26,3 +27,9 @@ function deleteOne(req, res){
    .then(movie => {res.json(movie)})
    .catch(err => {res.json(err)})
 };
+
+function update(req, res) {
+  Movie.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  .then(movie => {res.json(movie)})
+  .catch(err => {res.json(err)})
+}
