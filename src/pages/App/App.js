@@ -8,6 +8,7 @@ import authService from '../../services/authService';
 import Landing from '../Landing/Landing'
 import AddMovie from '../AddMovie/AddMovie'
 import * as movieAPI from '../../services/movies-api'
+import MovieList from '../MovieList/MovieList'
 
 class App extends Component {
   state = {
@@ -69,6 +70,15 @@ class App extends Component {
           <Redirect to='/login' />
           }
 
+        />
+        <Route 
+          exact path='/movies'
+          render={()=>
+          <MovieList 
+            movies={this.state.movies}
+            user={this.state.user}
+          />
+          }
         />
       </>
     );
