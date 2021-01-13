@@ -23,3 +23,12 @@ export function deleteOne(id) {
       }, {mode: "cors"})
       .then(res => res.json());
     }
+
+export function update(movie) {
+      return fetch(`${BASE_URL}${movie.id}`, {
+            method: 'PUT',
+            headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+            body: JSON.stringify(movie)
+      }, {mode: 'cors'})
+      .then( res => res.json())
+}
