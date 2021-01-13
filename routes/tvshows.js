@@ -5,6 +5,7 @@ const tvshowsCtrl = require('../controllers/tvshows');
 
 // Protected Routes
 router.use(require('../config/auth'));
+router.post('/',checkAuth, tvshowsCtrl.create);
 
 function checkAuth(req, res, next) {
 	if (req.user) return next();
