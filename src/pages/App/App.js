@@ -9,6 +9,7 @@ import Landing from '../Landing/Landing'
 import AddMovie from '../AddMovie/AddMovie'
 import * as movieAPI from '../../services/movies-api'
 import MovieList from '../MovieList/MovieList'
+import EditMovie from '../EditMovie/EditMovie'
 
 class App extends Component {
   state = {
@@ -97,6 +98,20 @@ class App extends Component {
           />
           }
         />
+
+        <Route exact path='/edit' render={({location}) =>
+          authService.getUser() ?
+            <EditMovie
+              handleUpdateMovie={this.handleUpdateMovie}
+              location={location}
+              user={this.state.user}
+            />
+              :
+            <Redirect to='/login' />    
+        }
+        
+        />  
+
       </>
     );
   }
