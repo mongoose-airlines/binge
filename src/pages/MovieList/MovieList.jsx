@@ -1,9 +1,21 @@
 import React from 'react'
+import MovieCard from '../../components/MovieCard/MovieCard'
 import './MovieList.css'
 
 const MovieList = (props) => {
     return ( 
-        <h3>Movie List</h3>
+       <>
+        <div className='MovieList-grid'>
+            {props.movies.map(movie => 
+                <MovieCard 
+                    key={movie._id}
+                    movie={movie}
+                    handleDeleteMovie={props.handleDeleteMovie}
+                    user={props.user}
+                />
+            )}
+        </div>
+       </>
      );
 }
  
