@@ -23,7 +23,7 @@
   -  ~~Add Nav Bar with links to several paths~~ (done)
   -  Create .env file and add `DATABASE_URL` and `SECRET`.  (Ben will share URL)
 
-<br><br>
+<br>
 
 ---
 <br>
@@ -73,7 +73,7 @@ const movieSchema = new Schema({
 	genre: {
 		type: String
 	},
-	imdbRating: {
+	imdbRating: { 
 		type: Number
 	},
 	image: {
@@ -83,12 +83,12 @@ const movieSchema = new Schema({
 }, { timestamps: true })
 
 module.exports = mongoose.model('Movie', movieSchema);
-
+ 
 ```
 
 
 ```js
-// tvshow.js
+// tvshow.jsx
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -121,7 +121,7 @@ const tvshowSchema = new Schema({
 	},
 	addedBy: { type: Schema.Types.ObjectId, ref: 'User'},
 }, { timestamps: true })
-
+ 
 module.exports = mongoose.model('Tvshow', tvshowSchema);
 
 ```
