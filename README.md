@@ -1149,7 +1149,5 @@ export function create(tvshow) {
 ```
 <br>
 
----
-<br>
 
   

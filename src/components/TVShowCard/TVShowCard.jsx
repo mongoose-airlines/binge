@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function TVShowCard({ user, tvshow, handleDeleteTVShow, handleUpdateTVShow }) {
+function TVShowCard({ user, tvshow, handleDeleteTVShow }) {
   return(
     <>
       <div className=" card">
@@ -31,8 +31,7 @@ function TVShowCard({ user, tvshow, handleDeleteTVShow, handleUpdateTVShow }) {
                 className="btn yellow black-text"
                 to={{
                   pathname: '/editTV',
-                  state: {tvshow},
-                  handleUpdateTVShow
+                  state: {tvshow}
                 }}
               >
                 <i className="material-icons left">build</i>

@@ -1,5 +1,5 @@
 
-### 22.  ** -**  Stub up the `<AddTVShow>` component (create basic function component and display the page name in a simple HTML element).  Create a CSS file for `<AddTVShow>`, (add a flex display, centering, and a margin) and import it within the component.
+### 23. Stub up the `<AddTVShow>` component (create basic function component and display the page name in a simple HTML element).  Create a CSS file for `<AddTVShow>`, (add a flex display, centering, and a margin) and import it within the component.
 ```
 mkdir src/pages/AddTVShow
 touch src/pages/AddTVShow/AddTVShow.jsx src/pages/AddTVShow/AddTVShow.css
@@ -16,18 +16,13 @@ touch src/pages/AddTVShow/AddTVShow.jsx src/pages/AddTVShow/AddTVShow.css
 ```
 ```js
 // AddTVShow.jsx
-import React, { Component } from 'react';
 import './AddTVShow.css';
 
-class AddTVShow extends Component {
-    state = {
-    };
+function AddTVShow(props) {
 
-    render() {
-        return (
-            <h3>Add TV Show Page</h3>
-        )
-    }
+	return (
+		<h3>Add TV Show Page</h3>
+	)
 }
 
 export default AddTVShow;
@@ -36,29 +31,18 @@ export default AddTVShow;
 <br>
 
   
-### 23.  ** -**  Import the `<AddTVShow>` component in App.js and write a Route for it such that the user is redirected to log in if they aren't.  Import the function to create a tv show in App.js, write a handleAddTVShow function, and pass it to `<AddTVShow>` along with the user stored in state.
+### 24. Import the `<AddTVShow>` component in App.js and write a Route for it such that the user is redirected to log in if they aren't already  (Be sure to pass the user stored in state to the component via props).  
 ```js
 // App.js
 import { Route, Redirect } from 'react-router-dom'
 import AddTVShow from '../AddTVShow/AddTVShow'
-import * as tvshowAPI from '../../services/tvshows-api'
 .
 .
 .
-handleAddTVShow = async newTVShowData => {
-  const newTVShow = await tvshowAPI.create(newTVShowData);
-  newTVShow.addedBy = {name: this.state.user.name, _id: this.state.user._id}
-  this.setState(state => ({
-    tvshows: [...state.tvshows, newTVShow]
-  }), () => this.props.history.push('/tvshows'));
-}
-.
-.
-.
+
 <Route exact path='/tvshows/add' render={() => 
   authService.getUser() ?
     <AddTVShow 
-      handleAddTVShow = {this.handleAddTVShow}
       user={this.state.user}
     />
   :
@@ -68,116 +52,153 @@ handleAddTVShow = async newTVShowData => {
 ---
 <br>
   
-### 24.  ** -**  Add state in `<AddTVShow>` (for formData and form validation).  Create a formRef in `<AddTVShow>` and display a form with all tv show fields and a button to submit the form.  Write the handleSubmit and handleChange functions on `<AddTVShow>`.
+### 25. Because we're using a function component, we'll need to store our form data and form validation in state using hooks!  Instead of writing a handleChange function for every single form, we can take this opportunity to create a custom hook that will work for any similar setup in the future, regardless of the form fields!  
+
+```bash
+mkdir src/hooks
+touch src/hooks/useForm.js
+```
 ```js
-// AddTVShow.jsx
-import React, { Component } from 'react';
-import './AddTVShow.css'
+// useForm.js
+import { useState } from 'react';
 
-class AddTVShow extends Component {
-  state = {
-    invalidForm: true,
-    formData: {
-      name: '',
-      cast: [],
-      description: '',
-      seasons: '',
-      releaseDate: '',
-      episodes: '',
-      imdbRating: '',
-      image: ''
-    }
-  };
+export const useForm = (initialValues) => {
+	const [values, setValues] = useState(initialValues);
 
-    formRef = React.createRef();
+	return [
+		values,
+		e => {
+			setValues({
+				...values,
+				[e.target.name]: e.target.value
+			})
+		}
+	]
+}
+```
+---
+<br>
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.handleAddTVShow(this.state.formData);
-      };
+### 26. Import our new custom hook within the `<AddTVShow>` component. We'll also need to import `useState` (we'll use this to manipulate state), `useEffect` (this will be used to update our form validation every time state changes via keypress), `useRef` (this is used to create an object to reference our form for validation), and `useHistory` (this is how we access history via hooks!) from the appropriate places.  Import the tvshows-api too, so we can access all the functions being exported.
 
-    handleChange = e => {
-        const formData = {...this.state.formData, [e.target.name]: e.target.value};
-        this.setState({
-        formData,
-        invalidForm: !this.formRef.current.checkValidity()
-        });
-    };
+```js
+import React, { useState, useEffect, useRef } from 'react';
+import './AddTVShow.css';
+import { useHistory } from 'react-router-dom'
+import { useForm } from '../../hooks/useForm'
+import * as tvshowAPI from '../../services/tvshows-api'
 
-    render() {
-        return (
-            <>
-                <div className="AddTVShow">
-                    <form className="col s12" ref={this.formRef} onSubmit={this.handleSubmit}>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="name" id="name" type="text" className="active" value={this.state.formData.name} onChange={this.handleChange} required />
-                            <label htmlFor="name">TV Show Name</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="cast" id="cast" type="text" className="active" value={this.state.formData.cast} onChange={this.handleChange} required/>
-                            <label htmlFor="cast">Cast (Separate with commas)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="description" id="description" type="text" className="active" value={this.state.formData.description} onChange={this.handleChange}/>
-                            <label htmlFor="description">Description</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="releaseDate" id="release" type="text" className="active" value={this.state.formData.releaseDate} onChange={this.handleChange}/>
-                            <label htmlFor="release">Release Year</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="seasons" id="seasons" type="text" className="active" value={this.state.formData.seasons} onChange={this.handleChange}/>
-                            <label htmlFor="seasons">Seasons</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="episodes" id="episodes" type="text" className="active" value={this.state.formData.episodes} onChange={this.handleChange}/>
-                            <label htmlFor="episodes">Episodes</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="imdbRating" id="imdbRating" type="text" className="active" value={this.state.formData.imdbRating} onChange={this.handleChange}/>
-                            <label htmlFor="imdbRating">IMDB Rating</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="image" id="imageURL" type="text" className="active" value={this.state.formData.image} onChange={this.handleChange}/>
-                            <label htmlFor="imageURL">Image URL</label>
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn red"
-                            disabled={this.state.invalidForm}
-                        ><i className="material-icons left">add</i>
-                            Add TV Show
-                        </button>                           
-                    </form>
-                </div>
-            </>
-        )
-    }
+function AddTVShow(props) {
+
+	// allows access to history for programmatic routing
+	const history = useHistory();
+	// initializing the form as invalid
+	const [invalidForm, setValidForm] = useState(true);
+	// initializes an object to be used for form validation
+	const formRef = useRef();
+	// use the custom hook to initialize state
+  const [state, handleChange] = useForm({
+  name: '',
+  cast: [],
+  description: '',
+  seasons: '',
+  releaseDate: '',
+  episodes: '',
+  imdbRating: '',
+  image: ''
+  })
+
+	// function to handle adding a show via API call
+  async function handleAddTVShow(newTVShowData){
+    await tvshowAPI.create(newTVShowData);
+    history.push('/tvshows');
+  }
+
+	// hook responsible for checking form validity on state change
+  useEffect(() => {
+    formRef.current.checkValidity() ? setValidForm(false) : setValidForm(true);
+  }, [state]);
+
+	// submitting the form passes state data to the function above 
+  async function handleSubmit(e) {
+    e.preventDefault()
+    handleAddTVShow(state)
+  }
+
+  return (
+    <>
+      <div className="AddTVShow">
+        <form className="col s12" ref={formRef} onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="name" id="name" type="text" className="active" value={state.name} onChange={handleChange} required />
+                <label htmlFor="name">TV Show Name</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="cast" id="cast" type="text" className="active" value={state.cast} onChange={handleChange} required/>
+                <label htmlFor="cast">Cast (Separate with commas)</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="description" id="description" type="text" className="active" value={state.description} onChange={handleChange}/>
+                <label htmlFor="description">Description</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="releaseDate" id="release" type="text" className="active" value={state.releaseDate} onChange={handleChange}/>
+                <label htmlFor="release">Release Year</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="seasons" id="seasons" type="text" className="active" value={state.seasons} onChange={handleChange}/>
+                <label htmlFor="seasons">Seasons</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="episodes" id="episodes" type="text" className="active" value={state.episodes} onChange={handleChange}/>
+                <label htmlFor="episodes">Episodes</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="imdbRating" id="imdbRating" type="text" className="active" value={state.imdbRating} onChange={handleChange}/>
+                <label htmlFor="imdbRating">IMDB Rating</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="image" id="imageURL" type="text" className="active" value={state.image} onChange={handleChange}/>
+                <label htmlFor="imageURL">Image URL</label>
+              </div>
+            </div>
+            <button
+                type="submit"
+                className="btn red"
+                disabled={invalidForm}
+            >
+              <i className="material-icons left">add</i>
+              Add TV Show
+            </button>                           
+        </form>
+      </div>
+    </>
+  )
 }
 
 export default AddTVShow;
 ```
+
 ---
 <br>
    
    
-### 25.  ** -**  Write the route / controller function in the back end to index tv shows.  Write the API call in tvshows-api.js to index tv shows.
+### 27. Write the route / controller function in the back end to index tv shows.  Write the API call in tvshows-api.js to index tv shows.
 
 ```js
 // routes/tvshows.js
@@ -229,24 +250,7 @@ export function getAll() {
 ---
 <br>
     
-### 26.  ** -**  Update the componentDidMount lifecycle method to App.js to get all tvshows from the API and store them in state.
-```js
-.
-.
-.
-async componentDidMount() {
-  const movies = await movieAPI.getAll();
-  const tvshows = await tvshowAPI.getAll();
-  this.setState({movies, tvshows})
-}
-.
-.
-.
-```   
----
-<br>
-
-### 27.  ** -**  Stub up the `<TVShowList>` component (create a basic function component and display the page name in a simple HTML element)  Create a CSS file for the `<TVShowList>` page and import it within the component.  Import the `<TVShowList>` component in App.js and write a route for it, (pass state for tv shows and user as props).
+### 28. Code the `<TVShowList>` component (create a basic function component and display the page name in a simple HTML element).  Create a CSS file for the `<TVShowList>` page and import it within the component.  Import the `<TVShowList>` component in App.js and write a route for it, (pass the user as props).
 ``` 
 mkdir src/pages/TVShowList
 touch src/pages/TVShowList/TVShowList.jsx 
@@ -303,7 +307,6 @@ import TVShowList from '../TVShowList/TVShowList';
 .
 <Route exact path='/tvshows' render={() => 
   <TVShowList 
-    tvshows = {this.state.tvshows}
     user={this.state.user}
   />
 }/>
@@ -314,8 +317,39 @@ import TVShowList from '../TVShowList/TVShowList';
 ---
 <br>
 
-  
-### 28.  ** -**  Create a `<TVShowCard>` folder/component in the 'components' directory, stub it up with a presentational component that displays a message when rendered (don't display any props yet).
+### 29. Import the `useState` and `useEffect` hooks to `<TVShowList>` along with the module holding our API calls.  `useEffect` will be used in lieu of `componentDidMount` to invoke an async function that handles getting all tv shows from the database and then setting state.  `useState` is used to manage state for tv shows.
+```js
+// TVShowList.jsx
+import React, { useState, useEffect } from 'react';
+import './TVShowList.css';
+import * as tvshowAPI from '../../services/tvshows-api'
+
+function TVShowList(props) {
+
+  const [tvshows, setTvshows] = useState([])
+
+	// using IIFE so we can use async and await, can't use async on the useEffect function
+  // see docs for details, make sure you use the semicolons!
+  //https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+  useEffect(() => {
+    (async function(){
+      const tvshows = await tvshowAPI.getAll();
+      setTvshows(tvshows);
+    })();
+  }, [])
+
+  return (
+    <h3>TV Show List</h3>
+  );
+}
+
+export default TVShowList;
+```
+
+---
+<br>
+
+### 30. Create a `<TVShowCard>` folder/component in the 'components' directory, stub it up with a presentational component that displays a message when rendered (don't display any props yet).
 ```
 mkdir src/components/TVShowCard
 touch src/components/TVShowCard/TVShowCard.jsx
@@ -336,7 +370,7 @@ export default TVShowCard;
 <br>
 
   
-### 29.  ** -**  Write the router / controller for deleting a tv show.  Write the API call in tvshow-api.js to handle deleting a tv show by id.  Write a handleDeleteTVShow function in App.js and pass it as props to `<TVShowList>`.
+### 31. Write the router / controller for deleting a tv show.  Write the API call in tvshow-api.js to handle deleting a tv show by id.  
 ```js
 // routes/tvshows.js
 .
@@ -380,61 +414,59 @@ export function deleteOne(id) {
   .then(res => res.json());
 }
 ```
-```js
-// App.js
-.
-.
-.
-handleDeleteTVShow = async id => {
-  if(authService.getUser()){
-    await tvshowAPI.deleteOne(id);
-    this.setState(state => ({
-      tvshows: state.tvshows.filter(t => t._id !== id)
-    }), () => this.props.history.push('/tvshows'));
-  } else {
-    this.props.history.push('/login')
-  }
-}
-.
-.
-.
-<Route exact path='/tvshows' render={() => 
-  <TVShowList 
-    tvshows = {this.state.tvshows}
-    user={this.state.user}
-    handleDeleteTVShow={this.handleDeleteTVShow}
-  />
-}/>
-```
 ---
 <br>
+
     
-### 30.  ** -**  Import `<TVShowCard>` component in the `<TVShowList>` component and them map props (tvshow, delete, and user) to `<TVShowCard>` components to be rendered.  Add a Materialize 'Card' to display the info passed in as props for a tv show on the `<TVShowCard>` component, implement a `<Link>` component to add a Materialize button that will pass the movie to '/edit'.
+### 32. Within `<TVShowList>`, write a function to handle deleting a tv show and adjusting state accordingly.  Import `<TVShowCard>` component in the `<TVShowList>` component and them map props (tvshow, delete, and user) to `<TVShowCard>` components to be rendered.  
+
+
 ```js
 // TVShowList.jsx
-import React from 'react';
-import TVShowCard from '../../components/TVShowCard/TVShowCard'
+import React, { useState, useEffect } from 'react';
 import './TVShowList.css';
+import * as tvshowAPI from '../../services/tvshows-api'
+import TVShowCard from '../../components/TVShowCard/TVShowCard'
 
 function TVShowList(props) {
-    return (
-        <>
-            <div className='TVShowList-grid'>
-                {props.tvshows.map(tvshow =>
-                    <TVShowCard 
-                        key={tvshow._id}
-                        tvshow={tvshow}
-                        user={props.user}
-                        handleDeleteTVShow={props.handleDeleteTVShow}
-                    />
-                )}
-            </div>
-        </>
-    );
+
+  const [tvshows, setTvshows] = useState([])
+
+  async function handleDeleteTVShow(id){
+    await tvshowAPI.deleteOne(id)
+    setTvshows(tvshows.filter(t => t._id !== id))
+  }
+
+  useEffect(() => {
+    (async function(){
+      const tvshows = await tvshowAPI.getAll();
+      setTvshows(tvshows)
+    })();
+  }, [])
+
+  return (
+    <>
+      <div className='TVShowList-grid'>
+        {tvshows.map(tvshow =>
+          <TVShowCard 
+            key={tvshow._id}
+            tvshow={tvshow}
+            user={props.user}
+            handleDeleteTVShow={handleDeleteTVShow}
+          />
+        )}
+      </div>
+    </>
+  );
 }
 
 export default TVShowList;
 ```
+
+---
+<br>
+
+### 33.  Add a Materialize 'Card' to display the info passed in as props for a tv show on the `<TVShowCard>` component, implement a `<Link>` component to add a Materialize button that will pass the movie to '/edit'.
 ```js
 // TVShowCard.jsx
 import React from 'react';
@@ -488,7 +520,7 @@ export default TVShowCard;
 ---
 <br>
     
-### 31.  ** -**  Write the router / controller for updating a tv show.  Write the API call in tvshows-api.js to handle updating a tv show by id.  Add a handleUpdateTVShow function in App.js.
+### 34. Write the router / controller for updating a tv show.  Write the API call in tvshows-api.js to handle updating a tv show by id. 
 ```js
 // routes/tvshows.js
 const router = require('express').Router();
@@ -540,29 +572,11 @@ export function update(tvshow) {
     .then(res => res.json());
 }
 ```
-```js
-// App.js
-.
-.
-.
-handleUpdateTVShow = async updatedTVShowData => {
-  const updatedTVShow = await tvshowAPI.update(updatedTVShowData);
-  const newTVShowsArray = this.state.tvshows.map(t => 
-    t._id === updatedTVShow._id ? updatedTVShow : t
-  );
-  this.setState(
-    {tvshows: newTVShowsArray},
-    () => this.props.history.push('/tvshows')
-  );
-}
-.
-.
-.
-```
+
 ---
 <br>
-  
-### 32.  ** -**  Create an `<EditTVShow>` folder/component in the 'components' directory, stub it up with a class component.  Copy and paste the contents of `<AddTVShow>` to `<EditTVShow>`, then make changes to reflect editing (initialize state using location, change the 'Add' button to a 'Save' button, and add a `<Link>` for the user to cancel and be returned to the tv show list).
+
+### 35. Create an `<EditTVShow>` folder/component in the 'components' directory, stub it up with another component.  Copy and paste the contents of `<AddTVShow>` to `<EditTVShow>`, then make changes to reflect editing (initialize state using location (notice the `useLocation` hook!), change the 'Add' button to a 'Save' button, flip the initial state of invalidForm to false, swap the create function for update, and add a `<Link>` for the user to cancel and be returned to the tv show list).
 ```
 mkdir src/pages/EditTVShow
 touch src/pages/EditTVShow/EditTVShow.jsx
@@ -579,146 +593,110 @@ touch src/pages/EditTVShow/EditTVShow.css
 ```
 ```js
 // EditTVShow.jsx
-import React, { Component } from 'react';
-import './EditMovie.css'
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import './EditTVShow.css';
+import { useForm } from '../../hooks/useForm'
+import { Link, useLocation, useHistory } from 'react-router-dom'
+import * as tvshowAPI from '../../services/tvshows-api'
 
-class EditMovie extends Component {
-    state = {
-        invalidForm: false,
-        formData: this.props.location.state.movie,
-        Name: "Edit Movie"
-    };
+function EditTVShow(props) {
 
-    formRef = React.createRef();
+  const location = useLocation()
+  const history = useHistory()
+  const [invalidForm, setValidForm] = useState(false);
+  const formRef = useRef();
+  const [state, handleChange] = useForm(location.state.tvshow)
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.handleUpdateMovie(this.state.formData);
-      };
+  useEffect(() => {
+    formRef.current.checkValidity() ? setValidForm(false) : setValidForm(true);
+  }, [state]);
+ 
+  async function handleSubmit(e) {
+    e.preventDefault()
+    await tvshowAPI.update(state)
+    history.push('/tvshows')
+  }
 
-    handleChange = e => {
-        const formData = {...this.state.formData, [e.target.name]: e.target.value};
-        this.setState({
-        formData,
-        invalidForm: !this.formRef.current.checkValidity()
-        });
-    };
-
-
-    render() {
-        return (
-            <>
-                <div className="EditMovie">
-                    <form className="col s12" ref={this.formRef} onSubmit={this.handleSubmit}>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="name" id="movie_name" type="text" className="active" value={this.state.formData.name} onChange={this.handleChange} required />
-                            <label className="active" htmlFor="movie_name">Movie Name</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="cast" id="cast" type="text" className="active" value={this.state.formData.cast.join(', ')} onChange={this.handleChange} required/>
-                            <label className="active" htmlFor="cast">Cast (Separate with commas)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="description" id="description" type="text" className="active" value={this.state.formData.description} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="description">Description</label>
-                            </div>
-                        </div>
-                        <div><label>MPAA Rating</label>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="G" checked={this.state.formData.mpaaRating === "G" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>G</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="PG" checked={this.state.formData.mpaaRating === "PG" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>PG</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="PG-13" checked={this.state.formData.mpaaRating === "PG-13" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>PG-13</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="R" checked={this.state.formData.mpaaRating === "R" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>R</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>  
-                                    <input className="with-gap" name="mpaaRating" value="NC-17" checked={this.state.formData.mpaaRating === "NC-17" ? true : "" } onChange={this.handleChange} type="radio"/>
-                                    <span>NC-17</span>
-                                </label>
-                            </p>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="releaseDate" id="release" type="text" className="active" value={this.state.formData.releaseDate} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="release">Release Year</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="runTime" id="runtime" type="text" className="active" value={this.state.formData.runTime} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="runtime">Run-time (Min)</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="genre" id="genre" type="text" className="active" value={this.state.formData.genre} onChange={this.handleChange}/>
-                            <label className="active"htmlFor="genre">Genre</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="imdbRating" id="imdb" type="text" className="active" value={this.state.formData.imdbRating} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="imdb">IMDB Rating</label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="input-field col s12">
-                            <input name="image" id="imageURL" type="text" className="active" value={this.state.formData.image} onChange={this.handleChange}/>
-                            <label className="active" htmlFor="imageURL">Image URL</label>
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn green"
-                            disabled={this.state.invalidForm}
-                        ><i className="material-icons left">edit</i>
-                            Update Movie
-                        </button>
-                        <Link 
-                            className="btn red"
-                            to={{
-                                pathname: '/movies'
-                            }}
-                        ><i className="material-icons left">undo</i>
-                        Cancel
-                        </Link>                            
-                    </form>
-                </div>
-            </>
-        )
-    }
+  return (
+    <>
+      <div className="EditTVShow">
+        <form className="col s12" ref={formRef} onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="name" id="name" type="text" className="active" value={state.name} onChange={handleChange} required />
+                <label className="active" htmlFor="name">TV Show Name</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="cast" id="cast" type="text" className="active" value={state.cast} onChange={handleChange} required/>
+                <label className="active" htmlFor="cast">Cast (Separate with commas)</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="description" id="description" type="text" className="active" value={state.description} onChange={handleChange}/>
+                <label className="active" htmlFor="description">Description</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="releaseDate" id="release" type="text" className="active" value={state.releaseDate} onChange={handleChange}/>
+                <label className="active" htmlFor="release">Release Year</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="seasons" id="seasons" type="text" className="active" value={state.seasons} onChange={handleChange}/>
+                <label className="active" htmlFor="seasons">Seasons</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="episodes" id="episodes" type="text" className="active" value={state.episodes} onChange={handleChange}/>
+                <label className="active" htmlFor="episodes">Episodes</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="imdbRating" id="imdbRating" type="text" className="active" value={state.imdbRating} onChange={handleChange}/>
+                <label className="active" htmlFor="imdbRating">IMDB Rating</label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <input name="image" id="imageURL" type="text" className="active" value={state.image} onChange={handleChange}/>
+                <label className="active" htmlFor="imageURL">Image URL</label>
+              </div>
+            </div>
+            <button
+                type="submit"
+                className="btn green"
+                disabled={invalidForm}
+            >
+              <i className="material-icons left">add</i>
+              Save TV Show
+            </button>
+            <Link                 
+              className="btn red"
+              to='/tvshows'
+            >
+              <i className="material-icons left">undo</i>
+              Cancel
+            </Link>  
+        </form>
+      </div>
+    </>
+  )
 }
 
-export default EditMovie;
+
+export default EditTVShow;
 ```
 ---
 <br>
 
-### 33.  ** -**  Import `<EditTVShow>` in App.js write a route for it (using location), and pass props (update function, user, and location).
+### 36. Import `<EditTVShow>` in App.js write a route for it (notice how we don't need to pass location because we're using hooks?!?!?!), and pass the user as props.
 
 ```js
 // App.js
@@ -726,11 +704,9 @@ import EditTVShow from '../EditTVShow/EditTVShow';
 .
 .
 .
-<Route exact path='/editTV' render={({location}) => 
+<Route exact path='/editTV' render={() => 
   authService.getUser() ?
     <EditTVShow
-      handleUpdateTVShow={this.handleUpdateTVShow}
-      location={location}
       user={this.state.user}
     />
   :
