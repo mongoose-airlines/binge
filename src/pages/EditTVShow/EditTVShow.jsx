@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './EditTVShow.css';
 import { useForm } from '../../hooks/useForm'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useHistory } from 'react-router-dom'
+import * as tvshowAPI from '../../services/tvshows-api'
 
 function EditTVShow(props) {
 
   const location = useLocation()
+  const history = useHistory()
   const [invalidForm, setValidForm] = useState(false);
   const formRef = useRef();
   const [state, handleChange] = useForm(location.state.tvshow)
@@ -16,7 +18,8 @@ function EditTVShow(props) {
  
   async function handleSubmit(e) {
     e.preventDefault()
-    location.handleUpdateTVShow(state)
+    await tvshowAPI.update(state)
+    history.push('/tvshows')
   }
 
   return (

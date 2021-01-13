@@ -114,7 +114,7 @@ class App extends Component {
           :
             <Redirect to='/login'/>
         }/>
-        <Route path='/tvshows' render={() => 
+        <Route exact path='/tvshows' render={() => 
           <TVShowList 
             user={this.state.user}
           />
