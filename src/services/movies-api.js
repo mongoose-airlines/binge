@@ -25,7 +25,7 @@ export function deleteOne(id) {
     }
 
 export function update(movie) {
-      return fetch(`${BASE_URL}${movie.id}`, {
+      return fetch(`${BASE_URL}${movie._id}`, {
             method: 'PUT',
             headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
             body: JSON.stringify(movie)
