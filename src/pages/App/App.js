@@ -12,6 +12,7 @@ import MovieList from '../MovieList/MovieList'
 import EditMovie from '../EditMovie/EditMovie'
 import AddTVShow from '../AddTVShow/AddTVShow'
 import TVShowList from '../TVShowList/TVShowList'
+import EditTVShow from '../EditTVShow/EditTVShow'
 
 class App extends Component {
   state = {
@@ -129,6 +130,17 @@ class App extends Component {
             <TVShowList  
               user={this.state.user}
             /> 
+          }
+        />
+        <Route 
+          exact path='/editTV'
+          render={() => 
+            authService.getUser() ?
+            <EditTVShow 
+              user={this.state.user}
+            />
+            :
+            <Redirect to='/login' />
           }
         />  
       </>

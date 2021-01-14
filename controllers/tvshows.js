@@ -3,7 +3,8 @@ const Tvshow = require("../models/tvshow")
 module.exports = {
     create,
     index,
-    delete: deleteOne
+    delete: deleteOne,
+    update
 }
 
 function create(req, res) {
@@ -23,6 +24,12 @@ function index(req, res) {
 
 function deleteOne(req, res) {
   Tvshow.findByIdAndDelete(req.params.id)
+  .then(tvshow => {res.json(tvshow)})
+  .catch(err => {res.json(err)})
+}
+
+function update(req, res) {
+  Tvshow.findByIdAndUpdate(req.params.id, req.body, {new: true})
   .then(tvshow => {res.json(tvshow)})
   .catch(err => {res.json(err)})
 }
