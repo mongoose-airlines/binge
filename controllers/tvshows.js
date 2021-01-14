@@ -2,7 +2,8 @@ const Tvshow = require("../models/tvshow")
 
 module.exports = {
     create,
-    index
+    index,
+    delete: deleteOne
 }
 
 function create(req, res) {
@@ -17,5 +18,11 @@ function index(req, res) {
   Tvshow.find({})
   .populate('addedBy')
   .then(tvshows => {res.json(tvshows)})
+  .catch(err => {res.json(err)})
+}
+
+function deleteOne(req, res) {
+  Tvshow.findByIdAndDelete(req.params.id)
+  .then(tvshow => {res.json(tvshow)})
   .catch(err => {res.json(err)})
 }
