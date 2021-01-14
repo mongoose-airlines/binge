@@ -2,6 +2,7 @@ const Tvshow = require("../models/tvshow")
 
 module.exports = {
     create,
+    index
 }
 
 function create(req, res) {
@@ -9,5 +10,12 @@ function create(req, res) {
   req.body.cast = req.body.cast.split(',');
   Tvshow.create(req.body)
   .then(tvshow => {res.json(tvshow)})
+  .catch(err => {res.json(err)})
+}
+
+function index(req, res) {
+  Tvshow.find({})
+  .populate('addedBy')
+  .then(tvshows => {res.json(tvshows)})
   .catch(err => {res.json(err)})
 }

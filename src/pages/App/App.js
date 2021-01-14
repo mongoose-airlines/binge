@@ -11,6 +11,7 @@ import * as movieAPI from '../../services/movies-api'
 import MovieList from '../MovieList/MovieList'
 import EditMovie from '../EditMovie/EditMovie'
 import AddTVShow from '../AddTVShow/AddTVShow'
+import TVShowList from '../TVShowList/TVShowList'
 
 class App extends Component {
   state = {
@@ -120,6 +121,14 @@ class App extends Component {
             />
             :
             <Redirect to='/login' />
+          }
+        />
+        <Route 
+          exact path='/tvshows'
+          render={() => 
+            <TVShowList  
+              user={this.state.user}
+            /> 
           }
         />  
       </>
